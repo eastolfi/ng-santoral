@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="header">
+        <span class="title">{{ today.month }}</span>
+    </div>
+
+    <div class="content">
+        <span class="previous fold fold-bl">
+            <span class="fold__item" (click)="requestPreviousDay()"></span>
+        </span>
+
+        <div class="date">
+            <span class="title">{{ today.date }}</span>
+            <span class="subtitle">{{ today.weekday }}</span>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="events">
+            <ul>
+                <li *ngFor="let event of today.events">{{ event }}</li>
+                <li *ngIf="!today.events?.length">No events for today</li>
+            </ul>
+        </div>
+
+        <span class="next fold fold-tr">
+            <span class="fold__item" (click)="requestNextDay()"></span>
+        </span>
+    </div>
+</div>
+
+
+
+<!-- <div class='page'>Link
+    <span class='fold'></span>
+ </div>
+<div class='page2'>Link
+    <span class='fold2'></span>
+ </div> -->

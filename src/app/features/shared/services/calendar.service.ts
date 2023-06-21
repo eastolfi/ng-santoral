@@ -39,7 +39,7 @@ export class CalendarService {
     }
 
     private async convertDate(original: Date): Promise<Day> {
-        return await this.persistanceService.getEvents('eastolfi', original).then((events: string[]) => {
+        return await this.getEvents('eastolfi', original).then((events: string[]) => {
             return {
                 date: this.dateService.getDay(original),
                 weekday: this.dateService.getWeekDate(original),
@@ -47,5 +47,13 @@ export class CalendarService {
                 events
             };
         })
+    }
+
+    private async getEvents(user: string, date: Date): Promise<string[]> {
+        const db = await this.persistanceService.getData();
+
+        const events = (db.calendars[user] || { events: {} }).events;
+
+        return events[this.persistanceService.getFormattedDate(date)] || []
     }
 }

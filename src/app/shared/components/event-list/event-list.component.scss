@@ -1,0 +1,27 @@
+.events {
+    display: flex;
+    flex-direction: column;
+
+    ul {
+        padding-inline-start: 0;
+
+        li:not(.event__add-event) {
+            /* padding-inline-start: 40px; */
+        }
+    }
+
+    .event {
+        list-style-type: "📅";
+        list-style-position: inside;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .event__add-event {
+        /* position: absolute; */
+        left: 0;
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+    }
+}

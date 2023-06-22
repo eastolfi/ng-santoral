@@ -1,38 +1,45 @@
 <div class="container">
-    <div class="header">
-        <span class="title">{{ today.month }}</span>
-    </div>
-
     <div class="content">
-        <span class="previous fold fold-bl">
+        <span class="previous fold fold-bl tactile">
             <span class="fold__item" (click)="requestPreviousDay()"></span>
         </span>
 
         <div class="date">
-            <span class="title">{{ today.date }}</span>
-            <span class="subtitle">{{ today.weekday }}</span>
+            <div class="date__month">
+                <span class="title_h2">{{ today.month }}</span>
+            </div>
+            <div class="date__day">
+                <span class="title">{{ today.date }}</span>
+                <span class="subtitle">{{ today.weekday }}</span>
+            </div>
         </div>
 
         <div class="separator"></div>
 
-        <div class="events">
-            <ul>
-                <li *ngFor="let event of today.events">{{ event }}</li>
-                <li *ngIf="!today.events?.length">No events for today</li>
-            </ul>
+        <snt-event-list
+            [events]="today.events"
+            [allowAddEvent]="true"
+            [limit]="5"
+        ></snt-event-list>
+
+        <div class="near-events">
+            <span>Yesterday</span>
+            <snt-event-list
+                [events]="yesterday.events"
+                [limit]="1"
+                [dayDescriptor]="'yesterday'"
+            ></snt-event-list>
+
+            <span>Tomorrow</span>
+            <snt-event-list
+                [events]="tomorrow.events"
+                [limit]="1"
+                [dayDescriptor]="'tomorrow'"
+            ></snt-event-list>
         </div>
 
-        <span class="next fold fold-tr">
+        <span class="next fold fold-tr tactile">
             <span class="fold__item" (click)="requestNextDay()"></span>
         </span>
     </div>
 </div>
-
-
-
-<!-- <div class='page'>Link
-    <span class='fold'></span>
- </div>
-<div class='page2'>Link
-    <span class='fold2'></span>
- </div> -->

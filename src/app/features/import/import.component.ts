@@ -21,7 +21,7 @@ export class ImportComponent {
     ) {}
 
     public openImportDialog(): void {
-        this.importDialog.nativeElement.show();
+        this.importDialog.nativeElement.showModal();
     }
 
     public closeImportDialog(): void {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal, computed, Signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, computed, Signal, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CalendarService, Day } from '../shared/services/calendar.service';
 import { Subscription } from 'rxjs';
@@ -10,10 +10,6 @@ import { DateService } from 'src/app/shared/services/date.service';
     styleUrls: ['./calendar-day.component.scss'],
 })
 export class CalendarDayComponent implements OnInit, OnDestroy {
-    public form = this.fb.group({
-        event: this.fb.control('', Validators.required)
-    })
-
     public get today(): Day {
         return this._today();
     }
@@ -65,5 +61,24 @@ export class CalendarDayComponent implements OnInit, OnDestroy {
 
     public goToToday(): void {
         this.calendarService.resetToday();
+    }
+
+    @ViewChild('pickDateDialog')
+    private readonly pickDateDialog!: ElementRef<HTMLDialogElement>;
+    public form = this.fb.group({
+        date: this.fb.control(new Date().toISOString(), Validators.required)
+    });
+    public openDialog(): void {
+        this.pickDateDialog.nativeElement.showModal();
+    }
+
+    public closeDialog(): void {
+        this.form.reset();
+        this.pickDateDialog.nativeElement.close();
+    }
+
+    public pickDate(): void {
+        this.calendarService.navigateToDate(new Date(this.form.getRawValue().date!));
+        this.pickDateDialog.nativeElement.close();
     }
 }

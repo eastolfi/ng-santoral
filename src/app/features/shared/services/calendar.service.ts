@@ -43,6 +43,10 @@ export class CalendarService {
         this.changeDate(new Date());
     }
 
+    public navigateToDate(date: Date): void {
+        this.changeDate(date);
+    }
+
     public addEvent(title: string): Observable<boolean> {
         const date = this.persistanceService.getFormattedDate(this.dateService.today);
 

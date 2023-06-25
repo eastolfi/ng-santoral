@@ -41,5 +41,18 @@
         <span class="next fold fold-tr tactile">
             <span class="fold__item" (click)="requestNextDay()"></span>
         </span>
+
+        <span class="pickDate" (click)="openDialog()">
+            <i class="fa-solid fa-calendar-days"></i>
+        </span>
     </div>
 </div>
+
+<dialog #pickDateDialog>
+    <label>Event</label>
+    <form [formGroup]="form">
+        <input type="date" formControlName="date" />
+        <button (click)="closeDialog()">Cancel</button>
+        <button (click)="pickDate()" [disabled]="form.invalid">Create</button>
+    </form>
+</dialog>

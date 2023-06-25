@@ -54,6 +54,13 @@ $card-bg: #fff;
     }
 }
 
+.pickDate {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
 .previous, .next {
     /* display: none; */
 }

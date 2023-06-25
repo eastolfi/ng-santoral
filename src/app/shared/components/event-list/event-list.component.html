@@ -2,7 +2,12 @@
     <ul>
         <li *ngIf="!events?.length">No events for {{ dayDescriptor }}</li>
 
-        <li *ngFor="let event of events | slice:0:limit" class="event">{{ event }}</li>
+        <li *ngFor="let event of events | slice:0:limit" class="event">
+            <span class="event__title">
+                {{ event }}
+            </span>
+            <!-- <i class="fa-solid fa-trash-can" (click)="deleteEvent(title)"></i> -->
+        </li>
         <!-- TODO: Add popup with all events -->
         <li *ngIf="showEventOverflow"><em>And more...</em></li>
 

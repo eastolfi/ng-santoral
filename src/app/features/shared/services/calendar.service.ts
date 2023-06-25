@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, map, mergeMap } from 'rxjs';
 import { DateService } from '../../../shared/services/date.service';
-import { PersistanceService } from 'src/app/shared/services/persistance.service';
+import { Calendar, PersistanceService } from 'src/app/shared/services/persistance.service';
 
 export type Day = {
     originalDate: Date;
@@ -43,54 +43,54 @@ export class CalendarService {
         this.changeDate(new Date());
     }
 
-    public async addEvent(title: string): Promise<void> {
-        const db = await this.persistanceService.getData();
-        const userDb = await this.persistanceService.getUserData(this.user, db);
-        const events = userDb.events;
-
+    public addEvent(title: string): Observable<boolean> {
         const date = this.persistanceService.getFormattedDate(this.dateService.today);
-        if (!events[date]) {
-            events[date] = [];
-        }
-        events[date].push(title);
 
-        db.calendars[this.user].events = events;
-        this.persistanceService.setData(db);
+        return this.persistanceService.getUserData(this.user)
+        .pipe(
+            map(({ events }: Calendar) => ({
+                events: {
+                    ...events,
+                    [date]: [ ...(events[date] || []), title ]
+                }
+            })),
+            mergeMap((updatedUserData: Calendar) => this.persistanceService.setUserData(this.user, updatedUserData))
+        )
     }
 
-    public async mapDateToDay(original: Date): Promise<Day> {
-        return await this.getEvents(this.user, original).then((events: string[]) => {
-            return {
+    public mapDateToDay(original: Date): Observable<Day> {
+        return this.getEvents(this.user, original)
+        .pipe(
+            map((events: string[]) => ({
                 originalDate: new Date(original),
                 date: this.dateService.getDay(original),
                 weekday: this.dateService.getWeekDate(original),
                 month: this.dateService.getMonth(original),
                 events
-            } as Day;
-        })
+            } as Day))
+        )
     }
 
     private changeDate(newDate: Date): void {
-        this.mapDateToDay(newDate).then((date: Day) => {
+        this.mapDateToDay(newDate).subscribe((date: Day) => {
             this.dateService.today = newDate;
             this.today$.next(date);
         });
 
-        this.mapDateToDay(this.dateService.add(-1, this.dateService.today)).then((date: Day) => {
+        this.mapDateToDay(this.dateService.add(-1, this.dateService.today)).subscribe((date: Day) => {
             this.yesterday$.next(date);
         });
 
-        this.mapDateToDay(this.dateService.add(1, this.dateService.today)).then((date: Day) => {
+        this.mapDateToDay(this.dateService.add(1, this.dateService.today)).subscribe((date: Day) => {
             this.tomorrow$.next(date);
         });
     }
 
-    private async getEvents(user: string, date: Date): Promise<string[]> {
-        const db = await this.persistanceService.getUserData(user);
-        const events = db.events;
-
-        const d = this.persistanceService.getFormattedDate(date);
-        const e = events[d]
-        return e || []
+    private getEvents(user: string, date: Date): Observable<string[]> {
+        return this.persistanceService.getUserData(user)
+        .pipe(
+            map((calendar: Calendar) =>
+                calendar.events[this.persistanceService.getFormattedDate(date)] || [])
+        )
     }
 }

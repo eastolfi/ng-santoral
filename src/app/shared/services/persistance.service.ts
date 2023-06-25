@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, defaultIfEmpty, filter, map, mergeMap, of, tap } from 'rxjs';
 import { DateService } from './date.service';
 
 type Version = string;
@@ -14,60 +16,107 @@ export type Calendar = {
     }
 };
 
+type GithubGist = {
+    content: string;
+}
+type GithubGistResponse = {
+    files: {
+        [filename: string]: GithubGist
+    }
+}
+
 @Injectable()
 export class PersistanceService {
-    constructor(private readonly dateService: DateService) {}
+    private defaultCalendar: Calendar = {
+        events: {}
+    }
 
-    // TODO: Cache
-    public async getUserData(user: string, db?: SantoralDB): Promise<Calendar> {
-        let userDb;
+    constructor(private readonly dateService: DateService, private readonly http: HttpClient) {}
 
-        try {
-            userDb = db || await this.getData();
-        } catch (error) {
-            console.error('Error while fetching user data');
-            console.error(error);
+    public getUserData(user: string): Observable<Calendar> {
+        return this.getData().pipe(
+            map(db => db.calendars),
+            filter(calendars => !!calendars[user]),
+            map(calendars => calendars[user]),
+            defaultIfEmpty(this.defaultCalendar),
+            catchError(error => {
+                console.error('Error while fetching user data');
+                console.error(error);
+                return of(this.defaultCalendar);
+            })
+        );
+    }
 
-            userDb = {
-                version: '-.-.-',
-                calendars: {
-                    [user]: {
-                        events: {
-                            [this.getFormattedDate(this.dateService.today)]: [ 'Error while obtaining the events.' ]
-                        }
-                    }
-                }
-            }
+    private static cache: SantoralDB | null = null;
+    public getData(): Observable<SantoralDB> {
+        if (this.hasCache()) {
+            return of(this.getCachedData());
         }
 
-        return userDb.calendars[user] || { events: {} };
+        return this.fetchData();
     }
 
-    public async getData(): Promise<SantoralDB> {
-        const req = await fetch(`https://api.github.com/gists/${import.meta.env['NG_APP_GIST_ID']}`);
-        const gist = await req.json();
-        return JSON.parse(gist.files[import.meta.env['NG_APP_GIST_NAME']].content);
+    private hasCache(): boolean {
+        return PersistanceService.cache != null || !!localStorage.getItem('db');
+    }
+    private getCachedData(): SantoralDB {
+        let db = PersistanceService.cache;
+
+        if (!db) {
+            db = JSON.parse(localStorage.getItem('db')!);
+        }
+
+        return db!;
+    }
+    private cacheData(db: SantoralDB): void {
+        PersistanceService.cache = db;
+        localStorage.setItem('db', JSON.stringify(db));
+    }
+    public invalidateCache(): void {
+        PersistanceService.cache = null;
+        localStorage.removeItem('db');
     }
 
-    public async setData(data: SantoralDB): Promise<void> {
-        const req = await fetch(`https://api.github.com/gists/${import.meta.env['NG_APP_GIST_ID']}`, {
-            method: 'PATCH',
+    public setData(data: SantoralDB): Observable<boolean> {
+        return this.http.patch(`https://api.github.com/gists/${import.meta.env['NG_APP_GIST_ID']}`,
+        JSON.stringify({
+            files: {
+                [import.meta.env['NG_APP_GIST_NAME']]: {
+                    content: JSON.stringify(data),
+                },
+            },
+        }), {
             headers: {
                 Authorization: `Bearer ${import.meta.env['NG_APP_GIST_TOKEN']}`,
-            },
-            body: JSON.stringify({
-                files: {
-                    [import.meta.env['NG_APP_GIST_NAME']]: {
-                        content: JSON.stringify(data),
-                    },
-                },
-            }),
-        });
+            }
+        }).pipe(
+            map(() => true),
+            tap(() => this.invalidateCache())
+        );
+    }
 
-        return req.json();
+    public setUserData(user: string, data: Calendar): Observable<boolean> {
+        return this.getData()
+        .pipe(
+            map((db: SantoralDB) => {
+                db.calendars[user].events = data.events;
+                return db;
+            }),
+            mergeMap((db) => this.setData(db))
+        )
     }
 
     public getFormattedDate(date: Date): string {
         return `${this.dateService.getMonthShort(date)}${this.dateService.getDay(date)}`;
+    }
+
+    private fetchData(): Observable<SantoralDB> {
+        return this.http.get<GithubGistResponse>(`https://api.github.com/gists/${import.meta.env['NG_APP_GIST_ID']}`)
+            .pipe(
+                map((gist: GithubGistResponse) => gist.files),
+                map(files => files[import.meta.env['NG_APP_GIST_NAME']]),
+                map(file => JSON.parse(file.content) as SantoralDB),
+                tap(this.cacheData),
+            )
     }
 }

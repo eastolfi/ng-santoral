@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CalendarService } from 'src/app/features/shared/services/calendar.service';
 
 @Component({
     selector: 'snt-add-event-dialog',
@@ -16,6 +17,7 @@ export class AddEventDialogComponent {
 
     constructor(
         private readonly fb: FormBuilder,
+        private readonly calendarService: CalendarService,
     ) {}
 
     public openDialog(): void {
@@ -28,9 +30,9 @@ export class AddEventDialogComponent {
     }
 
     public addEvent(): void {
-        // this.calendarService.addEvent(this.form.getRawValue().event as string)
-        // .then(() => {
-        //     window.location.reload();
-        // })
+        this.calendarService.addEvent(this.form.getRawValue().event as string)
+        .subscribe(() => {
+            window.location.reload();
+        })
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Calendar, PersistanceService } from './persistance.service';
-// import { DateService } from './date.service';
+import { Calendar, PersistanceService, SantoralDB } from './persistance.service';
+import { Observable, map, mergeMap, tap } from 'rxjs';
 
 @Injectable()
 export class ImportService {
@@ -9,10 +9,9 @@ export class ImportService {
 
     constructor(
         private readonly persistanceService: PersistanceService,
-        // private readonly dateService: DateService,
     ) {}
 
-    public async import(content: string): Promise<void> {
+    public import(content: string): Observable<boolean> {
         const lines = content.split('\n');
         const { events }: Calendar = { events: {} };
         lines
@@ -26,9 +25,16 @@ export class ImportService {
                 events[date].push(event);
             });
 
-        const db = await this.persistanceService.getData();
-        (db.calendars[this.user] || { events: {} }).events = events;
-
-        await this.persistanceService.setData(db);
+        return this.persistanceService.getData()
+        .pipe(
+            map(({ version, calendars }: SantoralDB) => ({
+                version,
+                calendars: {
+                    ...calendars,
+                    [this.user]: events
+                }
+            }) as SantoralDB),
+            mergeMap((updated: SantoralDB) => this.persistanceService.setData(updated)),
+        )
     }
 }

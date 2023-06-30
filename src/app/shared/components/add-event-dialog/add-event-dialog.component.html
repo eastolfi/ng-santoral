@@ -1,12 +1,14 @@
-<snt-button (click)="openDialog()">
-    <i class="fa-solid fa-plus"></i><span>Add event</span>
-</snt-button>
+<ng-container *ngIf="isAuthorized">
+    <snt-button (click)="openDialog()">
+        <i class="fa-solid fa-plus"></i><span>Add event</span>
+    </snt-button>
 
-<dialog #addEventDialog>
-    <label>Event</label>
-    <form [formGroup]="form">
-        <input type="text" formControlName="event" />
-        <button (click)="closeDialog()">Cancel</button>
-        <button (click)="addEvent()" [disabled]="form.invalid">Create</button>
-    </form>
-</dialog>
+    <dialog #addEventDialog>
+        <label>Event</label>
+        <form [formGroup]="form">
+            <input type="text" formControlName="event" />
+            <button (click)="closeDialog()">Cancel</button>
+            <button (click)="addEvent()" [disabled]="form.invalid">Create</button>
+        </form>
+    </dialog>
+</ng-container>

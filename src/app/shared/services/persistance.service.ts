@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, defaultIfEmpty, filter, map, mergeMap, of, tap } from 'rxjs';
+
 import { DateService } from './date.service';
 
 type Version = string;
@@ -78,16 +79,16 @@ export class PersistanceService {
     }
 
     public setData(data: SantoralDB): Observable<boolean> {
-        return this.http.patch(`https://api.github.com/gists/${import.meta.env['NG_APP_GIST_ID']}`,
+        return this.http.patch(`https://api.github.com/gists/${import.meta.env.NG_APP_GIST_ID}`,
         JSON.stringify({
             files: {
-                [import.meta.env['NG_APP_GIST_NAME']]: {
+                [import.meta.env.NG_APP_GIST_NAME]: {
                     content: JSON.stringify(data),
                 },
             },
         }), {
             headers: {
-                Authorization: `Bearer ${import.meta.env['NG_APP_GIST_TOKEN']}`,
+                Authorization: `Bearer ${import.meta.env.NG_APP_GIST_TOKEN}`,
             }
         }).pipe(
             map(() => true),
@@ -111,10 +112,10 @@ export class PersistanceService {
     }
 
     private fetchData(): Observable<SantoralDB> {
-        return this.http.get<GithubGistResponse>(`https://api.github.com/gists/${import.meta.env['NG_APP_GIST_ID']}`)
+        return this.http.get<GithubGistResponse>(`https://api.github.com/gists/${import.meta.env.NG_APP_GIST_ID}`)
             .pipe(
                 map((gist: GithubGistResponse) => gist.files),
-                map(files => files[import.meta.env['NG_APP_GIST_NAME']]),
+                map(files => files[import.meta.env.NG_APP_GIST_NAME]),
                 map(file => JSON.parse(file.content) as SantoralDB),
                 tap(this.cacheData),
             )

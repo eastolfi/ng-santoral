@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+
 import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 import { CalendarService } from './shared/services/calendar.service';
 import { SharedModule } from '../shared/shared.module';
@@ -14,7 +15,11 @@ const components = [
 
 @NgModule({
     declarations: [...components],
-    imports: [CommonModule, ReactiveFormsModule, SharedModule],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        SharedModule,
+    ],
     providers: [CalendarService, ImportService],
     exports: [...components],
 })

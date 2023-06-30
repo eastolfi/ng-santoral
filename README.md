@@ -1,5 +1,14 @@
 # NgSantoral
 
+## Configuration
+
+NG_APP_GIST_NAME=
+NG_APP_GIST_ID=
+NG_APP_GIST_TOKEN=
+NG_APP_AUTH0_DOMAIN=
+NG_APP_AUTH0_CLIENT_ID=
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
 
 ## Development server

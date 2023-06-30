@@ -2,16 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // import { DialogComponent } from './dialog/dialog.component';
-import { ButtonComponent } from './button/button.component';
+import { BottomNavigationModule } from './bottom-navigation/bottom-navigation.module';
+// import { TreeComponent } from './tree/tree.component';
 
-const components = [
+const components: any[] = [
     // DialogComponent,
-    ButtonComponent,
+    // TreeComponent,
 ];
 
 @NgModule({
     declarations: [...components],
-    imports: [CommonModule],
-    exports: [...components]
+    imports: [
+        CommonModule,
+        BottomNavigationModule,
+    ],
+    exports: [
+        ...components,
+        BottomNavigationModule,
+    ]
 })
 export class UiModule {}

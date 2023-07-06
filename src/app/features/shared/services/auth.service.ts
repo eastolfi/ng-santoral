@@ -25,7 +25,7 @@ export class AuthService implements OnDestroy {
 
     public logout(): void {
         this.auth0.logout({
-            logoutParams: { returnTo: document.location.origin }
+            logoutParams: { returnTo: document.location.href }
         });
     }
 

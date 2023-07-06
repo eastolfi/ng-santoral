@@ -1,4 +1,5 @@
 import { Component, Input, Signal, signal } from '@angular/core';
+import { Router } from '@angular/router';
 
 export class BottomNavigationConfig {
     public items: BottomNavigationItem[] = [];
@@ -50,6 +51,8 @@ export class BottomNavigationComponent {
     @Input({ required: true })
     public config!: BottomNavigationConfig;
 
+    constructor(private readonly router: Router) {}
+
     public static configurate(): BottomNavigationBuilder {
         return new BottomNavigationBuilder();
     }
@@ -68,9 +71,13 @@ export class BottomNavigationComponent {
 
     public doClick(item: BottomNavigationItem): void {
         if (typeof item.action === 'string') {
-            //
+            this.navigateTo(item.action);
         } else {
             item.action();
         }
+    }
+
+    private navigateTo(url: string): void {
+        this.router.navigate([ url ]);
     }
 }

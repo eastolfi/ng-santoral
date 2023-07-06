@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ImportComponent } from './import.component';
 
 const routes: Routes = [
     {
         path: '',
-        redirectTo: '/calendar',
-        pathMatch: 'full'
+        component: ImportComponent
     }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class ImportRoutingModule { }

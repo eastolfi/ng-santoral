@@ -2,25 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { CalendarDayComponent } from './calendar-day/calendar-day.component';
-import { CalendarService } from './shared/services/calendar.service';
 import { SharedModule } from '../shared/shared.module';
-import { ImportComponent } from './import/import.component';
-import { ImportService } from '../shared/services/import.service';
-
-const components = [
-    CalendarDayComponent,
-    ImportComponent,
-];
+import { FeaturesRoutingModule } from './features-routing.module';
 
 @NgModule({
-    declarations: [...components],
+    declarations: [],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         SharedModule,
+        FeaturesRoutingModule,
     ],
-    providers: [CalendarService, ImportService],
-    exports: [...components],
+    exports: [],
 })
 export class FeaturesModule {}

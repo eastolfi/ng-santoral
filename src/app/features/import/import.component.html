@@ -1,10 +1,10 @@
-<button (click)="openImportDialog()">Import</button>
+<button class="btn btn-sm" (click)="openImportDialog()">Import</button>
 
 <dialog #importDialog>
     <label>Events - M;D;EVENT</label>
     <form [formGroup]="form">
         <textarea formControlName="events" rows="10"></textarea>
-        <button (click)="closeImportDialog()">Cancel</button>
-        <button (click)="importEvents()" [disabled]="form.invalid">Import</button>
+        <button class="btn btn-sm" (click)="closeImportDialog()">Cancel</button>
+        <button class="btn btn-sm" (click)="importEvents()" [disabled]="form.invalid">Import</button>
     </form>
 </dialog>

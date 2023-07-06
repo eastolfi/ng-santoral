@@ -30,9 +30,21 @@ export class AppComponent implements OnDestroy {
 
         this.bottomNavConfig = BottomNavigationComponent.configurate()
         .addItem({
-            label: 'Settings',
-            icon: 'fa-solid fa-sliders',
-            action: ''
+            label: 'Calendar',
+            icon: 'fa-solid fa-calendar-days',
+            action: '/calendar'
+        })
+        .addItem({
+            label: 'Import',
+            icon: 'fa-solid fa-upload',
+            action: '/import',
+            displaySignal: isConnectedSignal
+        })
+        .addItem({
+            label: 'Export',
+            icon: 'fa-solid fa-download',
+            action: '/export',
+            displaySignal: isConnectedSignal
         })
         .addItem({
             label: 'Log In',

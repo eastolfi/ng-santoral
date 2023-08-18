@@ -75,6 +75,13 @@ export class CalendarService {
         )
     }
 
+    public findAllEvents(): Observable<{ [user: string]: Calendar }> {
+        return this.persistanceService.getData()
+        .pipe(
+            map(db => db.calendars),
+        );
+    }
+
     private changeDate(newDate: Date): void {
         this.mapDateToDay(newDate).subscribe((date: Day) => {
             this.dateService.today = newDate;

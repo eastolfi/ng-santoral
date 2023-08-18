@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 
 // import { DialogComponent } from './dialog/dialog.component';
 import { BottomNavigationModule } from './bottom-navigation/bottom-navigation.module';
-// import { TreeComponent } from './tree/tree.component';
+import { TreeModule } from './tree/tree.module';
 
 const components: any[] = [
     // DialogComponent,
-    // TreeComponent,
 ];
 
 @NgModule({
@@ -15,10 +14,12 @@ const components: any[] = [
     imports: [
         CommonModule,
         BottomNavigationModule,
+        TreeModule,
     ],
     exports: [
         ...components,
         BottomNavigationModule,
+        TreeModule,
     ]
 })
 export class UiModule {}

@@ -1,0 +1,50 @@
+<!-- {{ selectedItems | json }} -->
+
+<ng-template #leaf let-element="element">
+    <li class="pure-tree_link">
+        <!-- <div class="tree-element"> -->
+
+            <a [title]="element.label">
+                <input class="add-element"
+                    type="checkbox"
+                    [id]="'toggle_' + element.id"
+                    [checked]="element.checked"
+                    (change)="onToggleItem(element, $event)">
+
+                {{ element.label }}
+            </a>
+        <!-- </div> -->
+    </li>
+</ng-template>
+
+<ng-template #list let-element="element">
+    <li>
+
+        <input class="toggle-elements" type="checkbox" [id]="'_' + element.id" checked />
+        <label [for]="'_' + element.id">
+            <input class="add-element"
+                type="checkbox"
+                [id]="'toggle_' + element.id"
+                [checked]="element.checked"
+                (change)="onToggleItem(element, $event)">
+
+            {{ element.label }}
+        </label>
+
+        <ul class="pure-tree">
+            <ng-container
+            *ngFor="let child of element.children"
+            [ngTemplateOutlet]="child.children ? list : leaf"
+            [ngTemplateOutletContext]="{ element: child }"
+            ></ng-container>
+        </ul>
+    </li>
+</ng-template>
+
+<ul id="compositions-list" class="pure-tree main-tree">
+    <ng-container
+        *ngFor="let root of elements"
+        [ngTemplateOutlet]="root.children?.length ? list : leaf"
+        [ngTemplateOutletContext]="{ element: root }"
+    ></ng-container>
+</ul>

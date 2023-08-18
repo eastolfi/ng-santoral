@@ -1,30 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, defaultIfEmpty, filter, map, mergeMap, of, tap } from 'rxjs';
+import { Observable, catchError, defaultIfEmpty, map, of, tap } from 'rxjs';
+import { Event } from '@prisma/client';
 
 import { DateService } from './date.service';
 
-type Version = string;
-export type SantoralDB = {
-    version: Version;
-    calendars: {
-        [user: string]: Calendar;
-    };
-};
 export type Calendar = {
     events: {
         [date: string]: string[]
     }
 };
 
-type GithubGist = {
-    content: string;
-}
-type GithubGistResponse = {
-    files: {
-        [filename: string]: GithubGist
-    }
-}
 
 @Injectable()
 export class PersistanceService {
@@ -32,13 +18,31 @@ export class PersistanceService {
         events: {}
     }
 
-    constructor(private readonly dateService: DateService, private readonly http: HttpClient) {}
+    constructor(
+        private readonly dateService: DateService,
+        private readonly http: HttpClient,
+    ) {}
 
-    public getUserData(user: string): Observable<Calendar> {
-        return this.getData().pipe(
-            map(db => db.calendars),
-            filter(calendars => !!calendars[user]),
-            map(calendars => calendars[user]),
+    private findEventsForUser(username: string, date: Date): Observable<Event[]> {
+        return this.http.get<Event[]>(`${this.baseUrl}/events?username=${username}&date=${this.getFormattedDate(date)}`)
+            .pipe(tap(events => console.log(`Events for ${date}: ${events.length}`)));
+    }
+
+    public getUserData(user: string, date: Date): Observable<Calendar> {
+        type EventsForCalendar = { [date: string]: Pick<Event, 'id' | 'title'>[] };
+
+        return this.findEventsForUser(user, date).pipe(
+            map((events: Event[]) => events
+                .map(({ id, title, day, month }: Event) => ({ date: `${month}${day}`, title, id }))
+                .reduce((previous: EventsForCalendar, { id, date, title }: { id:number, date: string, title: string }) => {
+                    if (!previous[date]) {
+                        previous[date] = [];
+                    }
+                    previous[date].push({ id, title });
+                    return previous;
+                }, {} as EventsForCalendar)),
+            map(events => ({ events })),
+            // tap(this.cacheData),
             defaultIfEmpty(this.defaultCalendar),
             catchError(error => {
                 console.error('Error while fetching user data');
@@ -78,46 +82,8 @@ export class PersistanceService {
         localStorage.removeItem('db');
     }
 
-    public setData(data: SantoralDB): Observable<boolean> {
-        return this.http.patch(`https://api.github.com/gists/${import.meta.env.NG_APP_GIST_ID}`,
-        JSON.stringify({
-            files: {
-                [import.meta.env.NG_APP_GIST_NAME]: {
-                    content: JSON.stringify(data),
-                },
-            },
-        }), {
-            headers: {
-                Authorization: `Bearer ${import.meta.env.NG_APP_GIST_TOKEN}`,
-            }
-        }).pipe(
-            map(() => true),
-            tap(() => this.invalidateCache())
-        );
-    }
-
-    public setUserData(user: string, data: Calendar): Observable<boolean> {
-        return this.getData()
-        .pipe(
-            map((db: SantoralDB) => {
-                db.calendars[user].events = data.events;
-                return db;
-            }),
-            mergeMap((db) => this.setData(db))
-        )
-    }
 
     public getFormattedDate(date: Date): string {
         return `${this.dateService.getMonthShort(date)}${this.dateService.getDay(date)}`;
-    }
-
-    private fetchData(): Observable<SantoralDB> {
-        return this.http.get<GithubGistResponse>(`https://api.github.com/gists/${import.meta.env.NG_APP_GIST_ID}`)
-            .pipe(
-                map((gist: GithubGistResponse) => gist.files),
-                map(files => files[import.meta.env.NG_APP_GIST_NAME]),
-                map(file => JSON.parse(file.content) as SantoralDB),
-                tap(this.cacheData),
-            )
     }
 }

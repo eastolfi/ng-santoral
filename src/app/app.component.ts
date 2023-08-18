@@ -35,18 +35,6 @@ export class AppComponent implements OnDestroy {
             action: '/calendar'
         })
         .addItem({
-            label: 'Import',
-            icon: 'fa-solid fa-upload',
-            action: '/import',
-            displaySignal: isConnectedSignal
-        })
-        .addItem({
-            label: 'Export',
-            icon: 'fa-solid fa-download',
-            action: '/export',
-            displaySignal: isConnectedSignal
-        })
-        .addItem({
             label: 'Log In',
             icon: 'fa-solid fa-arrow-right-to-bracket',
             action: () => this.auth.login(),

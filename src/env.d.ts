@@ -11,9 +11,7 @@ interface ImportMetaEnv {
     // Add your environment variables below
     // readonly NG_APP_API_URL: string;
     [key: string]: any;
-    readonly NG_APP_GIST_NAME: string;
-    readonly NG_APP_GIST_ID: string;
-    readonly NG_APP_GIST_TOKEN: string;
     readonly NG_APP_AUTH0_DOMAIN: string;
     readonly NG_APP_AUTH0_CLIENT_ID: string;
+    readonly NG_APP_API_BASE_URL: string;
 }

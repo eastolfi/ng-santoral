@@ -7,7 +7,7 @@ NG_APP_GIST_ID=
 NG_APP_GIST_TOKEN=
 NG_APP_AUTH0_DOMAIN=
 NG_APP_AUTH0_CLIENT_ID=
-
+NG_APP_API_BASE_URL=http://localhost:3030
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
 

@@ -12,6 +12,11 @@ NG_APP_API_BASE_URL=http://localhost:3030
 
 DATABASE_URL="mysql://root:pwd@localhost:3306/santoral"
 
+
+## Building docker images
+docker build -f ./Dockerfile     . -t eastolfi/santoral
+docker build -f ./api/Dockerfile . -t eastolfi/santoral-api
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
 
 ## Development server

@@ -7,13 +7,15 @@ import { DateService } from './date.service';
 
 export type Calendar = {
     events: {
-        [date: string]: string[]
+        [date: string]: Pick<Event, 'id' | 'title'>[]
     }
 };
 
 
 @Injectable()
 export class PersistanceService {
+    private baseUrl = import.meta.env.NG_APP_API_BASE_URL;
+
     private defaultCalendar: Calendar = {
         events: {}
     }
@@ -52,35 +54,20 @@ export class PersistanceService {
         );
     }
 
-    private static cache: SantoralDB | null = null;
-    public getData(): Observable<SantoralDB> {
-        if (this.hasCache()) {
-            return of(this.getCachedData());
-        }
+    // private static cache: SantoralDB | null = null;
+    // public getData(): Observable<SantoralDB> {
+    //     if (this.hasCache()) {
+    //         return of(this.getCachedData());
+    //     }
 
-        return this.fetchData();
-    }
+    //     return this.fetchData();
+    // }
 
-    private hasCache(): boolean {
-        return PersistanceService.cache != null || !!localStorage.getItem('db');
-    }
-    private getCachedData(): SantoralDB {
-        let db = PersistanceService.cache;
-
-        if (!db) {
-            db = JSON.parse(localStorage.getItem('db')!);
-        }
-
-        return db!;
-    }
-    private cacheData(db: SantoralDB): void {
-        PersistanceService.cache = db;
-        localStorage.setItem('db', JSON.stringify(db));
-    }
-    public invalidateCache(): void {
-        PersistanceService.cache = null;
-        localStorage.removeItem('db');
-    }
+    // private hasCache(): boolean {
+    //     return PersistanceService.cache != null || !!localStorage.getItem('db');
+    // }
+    // private getCachedData(): SantoralDB {
+    //     let db = PersistanceService.cache;
 
 
     public getFormattedDate(date: Date): string {

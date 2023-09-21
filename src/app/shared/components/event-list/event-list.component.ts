@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Event } from '@prisma/client';
 
 @Component({
     selector: 'snt-event-list',
@@ -7,13 +8,13 @@ import { Component, Input } from '@angular/core';
 })
 export class EventListComponent {
     @Input()
-    public set events(events: string[]) {
+    public set events(events: Pick<Event, 'id' | 'title'>[]) {
         this._events = events;
     }
     public get events() {
         return this._events;
     }
-    private _events: string[] = [];
+    private _events: Pick<Event, 'id' | 'title'>[] = [];
 
     @Input()
     public set limit(limit: number) {
@@ -26,6 +27,9 @@ export class EventListComponent {
 
     @Input()
     public allowAddEvent = false;
+
+    @Input()
+    public allowRemoveEvent = false;
 
     @Input()
     public dayDescriptor = 'today';

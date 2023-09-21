@@ -11,30 +11,30 @@ export class ImportService {
         private readonly persistanceService: PersistanceService,
     ) {}
 
-    public import(content: string): Observable<boolean> {
-        const lines = content.split('\n');
-        const { events }: Calendar = { events: {} };
-        lines
-            .map(line => line.split(this.delimiter))
-            .forEach(([ month, day, event ]) => {
-                const date = month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
-                if (!events[date]) {
-                    events[date] = [];
-                }
+    // public import(content: string): Observable<boolean> {
+    //     const lines = content.split('\n');
+    //     const { events }: Calendar = { events: {} };
+    //     lines
+    //         .map(line => line.split(this.delimiter))
+    //         .forEach(([ month, day, event ]) => {
+    //             const date = month.toString().padStart(2, '0') + day.toString().padStart(2, '0');
+    //             if (!events[date]) {
+    //                 events[date] = [];
+    //             }
 
-                events[date].push(event);
-            });
+    //             events[date].push(event);
+    //         });
 
-        return this.persistanceService.getData()
-        .pipe(
-            map(({ version, calendars }: SantoralDB) => ({
-                version,
-                calendars: {
-                    ...calendars,
-                    [this.user]: events
-                }
-            }) as SantoralDB),
-            mergeMap((updated: SantoralDB) => this.persistanceService.setData(updated)),
-        )
-    }
+    //     return this.persistanceService.getData()
+    //     .pipe(
+    //         map(({ version, calendars }: SantoralDB) => ({
+    //             version,
+    //             calendars: {
+    //                 ...calendars,
+    //                 [this.user]: events
+    //             }
+    //         }) as SantoralDB),
+    //         mergeMap((updated: SantoralDB) => this.persistanceService.setData(updated)),
+    //     )
+    // }
 }

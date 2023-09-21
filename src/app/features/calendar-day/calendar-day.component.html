@@ -19,6 +19,7 @@
         <snt-event-list
             [events]="today.events"
             [allowAddEvent]="true"
+            [allowRemoveEvent]="true"
             [limit]="5"
         ></snt-event-list>
 
@@ -49,10 +50,10 @@
 </div>
 
 <dialog #pickDateDialog>
-    <label>Event</label>
+    <label>Go to a date</label>
     <form [formGroup]="form">
         <input type="date" formControlName="date" />
         <button (click)="closeDialog()">Cancel</button>
-        <button (click)="pickDate()" [disabled]="form.invalid">Create</button>
+        <button (click)="pickDate()" [disabled]="form.invalid">Confirm</button>
     </form>
 </dialog>

@@ -4,9 +4,10 @@
 
         <li *ngFor="let event of events | slice:0:limit" class="event">
             <span class="event__title">
-                {{ event }}
+                {{ event.title }}
             </span>
-            <!-- <i class="fa-solid fa-trash-can" (click)="deleteEvent(title)"></i> -->
+
+            <snt-remove-event-dialog *ngIf="allowRemoveEvent" [eventId]="event.id"></snt-remove-event-dialog>
         </li>
         <!-- TODO: Add popup with all events -->
         <li *ngIf="showEventOverflow"><em>And more...</em></li>

@@ -8,6 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "prisma:client": "npx prisma generate",
     "api:compile": "shx rm -rf api/lib/ && tsc -p api/tsconfig.json",
     "api:start": "node api/lib/",
     "api:migrate": "knex migrate:latest",
@@ -16,7 +17,8 @@
     "api:prettier": "npx prettier \"**/*.ts\" --write",
     "api:mocha": "cross-env NODE_ENV=test mocha test/ --require ts-node/register --recursive --extension .ts --exit",
     "api:test": "cross-env NODE_ENV=test npm run migrate && npm run mocha",
-    "api:bundle:client": "npm run compile && npm pack --pack-destination ./public"
+    "api:bundle:client": "npm run compile && npm pack --pack-destination ./public",
+    "docker:api": "docker build api -t eastolfi/santoral-api"
   },
   "private": true,
   "prisma": {

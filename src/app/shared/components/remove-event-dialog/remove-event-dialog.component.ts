@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/features/shared/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'snt-remove-event-dialog',
@@ -30,7 +31,7 @@ export class RemoveEventDialogComponent implements OnDestroy {
     }
 
     public deleteEvent() {
-        this.http.delete(`${import.meta.env.NG_APP_API_BASE_URL}/events/${this.eventId}`)
+        this.http.delete(`${environment.apiUrl}/events/${this.eventId}`)
             .subscribe(() => window.location.reload());
     }
 }

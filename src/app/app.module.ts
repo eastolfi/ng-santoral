@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
 import { AuthService } from './features/shared/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
     declarations: [AppComponent],
@@ -15,8 +16,8 @@ import { AuthService } from './features/shared/services/auth.service';
         BrowserModule,
         HttpClientModule,
         Auth0Module.forRoot({
-            domain: import.meta.env.NG_APP_AUTH0_DOMAIN,
-            clientId: import.meta.env.NG_APP_AUTH0_CLIENT_ID,
+            domain: environment.auth0domain,
+            clientId: environment.auth0domain,
             authorizationParams: {
                 redirect_uri: window.location.origin
             }

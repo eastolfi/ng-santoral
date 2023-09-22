@@ -4,6 +4,7 @@ import { Observable, catchError, defaultIfEmpty, map, of, tap } from 'rxjs';
 import { Event } from '@prisma/client';
 
 import { DateService } from './date.service';
+import { environment } from 'src/environments/environment';
 
 export type Calendar = {
     events: {
@@ -14,8 +15,6 @@ export type Calendar = {
 
 @Injectable()
 export class PersistanceService {
-    private baseUrl = import.meta.env.NG_APP_API_BASE_URL;
-
     private defaultCalendar: Calendar = {
         events: {}
     }
@@ -26,7 +25,7 @@ export class PersistanceService {
     ) {}
 
     private findEventsForUser(username: string, date: Date): Observable<Event[]> {
-        return this.http.get<Event[]>(`${this.baseUrl}/events?username=${username}&date=${this.getFormattedDate(date)}`)
+        return this.http.get<Event[]>(`${environment.apiUrl}/events?username=${username}&date=${this.getFormattedDate(date)}`)
             .pipe(tap(events => console.log(`Events for ${date}: ${events.length}`)));
     }
 

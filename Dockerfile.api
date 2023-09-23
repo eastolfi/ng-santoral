@@ -9,9 +9,11 @@ COPY ./prisma ./prisma
 COPY ./config ./config
 COPY ./api ./api
 
-EXPOSE 3030
+EXPOSE 443
 
 RUN npm run prisma:client
 RUN npm run api:compile
+
+COPY ./api/src/certs/*.pem ./api/lib/certs/
 
 CMD [ "npm", "run", "api:start" ]

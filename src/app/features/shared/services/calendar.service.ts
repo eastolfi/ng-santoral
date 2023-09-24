@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, mergeMap, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, mergeMap, of } from 'rxjs';
 import { DateService } from '../../../shared/services/date.service';
 import { Calendar, PersistanceService } from 'src/app/shared/services/persistance.service';
 import { HttpClient } from '@angular/common/http';
@@ -96,9 +96,6 @@ export class CalendarService {
         this.getEventsForDate(newDate).subscribe((date: Day) => {
             this.dateService.today = newDate;
             this.today$.next(date);
-            alert('Done' + JSON.stringify(date))
-        }, error => {
-            alert(error)
         });
 
         this.getEventsForDate(this.dateService.add(-1, newDate)).subscribe((date: Day) => {

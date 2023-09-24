@@ -7,6 +7,7 @@ import {
     BottomNavigationComponent,
     BottomNavigationConfig
 } from './shared/components/ui/bottom-navigation/bottom-navigation.component';
+import { ToastService } from './shared/services/date.service';
 
 @Component({
     selector: 'snt-root',
@@ -15,6 +16,7 @@ import {
 })
 export class AppComponent implements OnDestroy {
     public bottomNavConfig!: BottomNavigationConfig;
+    public messages = ToastService.messages;
 
     private subscriptions: Subscription[] = [];
 

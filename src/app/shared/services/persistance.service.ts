@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, defaultIfEmpty, map, of, tap } from 'rxjs';
 import { Event } from '@prisma/client';
 
-import { DateService } from './date.service';
+import { DateService, ToastService } from './date.service';
 import { environment } from 'src/environments/environment';
 
 export type Calendar = {
@@ -42,12 +42,14 @@ export class PersistanceService {
                     previous[date].push({ id, title });
                     return previous;
                 }, {} as EventsForCalendar)),
+            tap(events => ToastService.messages.push(`Fetched ${Object.keys(events).length} events`)),
             map(events => ({ events })),
             // tap(this.cacheData),
             defaultIfEmpty(this.defaultCalendar),
             catchError(error => {
                 console.error('Error while fetching user data');
                 console.error(error);
+                ToastService.messages.push(error.message);
                 return of(this.defaultCalendar);
             })
         );

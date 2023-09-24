@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 const weekDays = [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado' ];
 const months = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
 
+// @Injectable()
+export class ToastService {
+    public static messages: string[] = [];
+}
+
 @Injectable()
 export class DateService {
     constructor() {}

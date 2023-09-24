@@ -96,7 +96,7 @@ export class CalendarService {
         this.getEventsForDate(newDate).subscribe((date: Day) => {
             this.dateService.today = newDate;
             this.today$.next(date);
-            alert('Done?')
+            alert('Done' + JSON.stringify(date))
         }, error => {
             alert(error)
         });

@@ -1,15 +1,15 @@
 import { createServer } from 'https';
-import { readFileSync, readdirSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import { app } from './app'
 import { logger } from './logger'
 
-const certsDir = join(__dirname, '/certs');
+const CERTIFICATES = join(__dirname, '/certs');
 
 const server = createServer({
-    key:  readFileSync(`${certsDir}/key.pem`),
-    cert: readFileSync(`${certsDir}/cert.pem`),
+    key:  readFileSync(`${CERTIFICATES}/key.pem`),
+    cert: readFileSync(`${CERTIFICATES}/cert.pem`),
 }, app.callback())
 .listen(443);
 

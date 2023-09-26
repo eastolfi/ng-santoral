@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts", "../backend/src/app/prisma.service.ts"],
+  "compilerOptions": {
+    "types": ["jest", "node"]
+  }
+}

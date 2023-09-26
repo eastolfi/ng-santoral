@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: frontend
+      #args:
+      # - REACT_APP_SERVICES_HOST=/services/m
+    ports:
+      - "89:80"
+    networks:
+      - frontend
+      - backend
+
+  backend:
+    image: backend
+    ports:
+      - "3009:3000"
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:

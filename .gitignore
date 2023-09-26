@@ -1,13 +1,12 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-.env
+.env.local
 
 # Compiled output
 /dist
 /tmp
 /out-tsc
 /bazel-out
-/api/lib
 
 # Node
 /node_modules
@@ -45,4 +44,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-/api/src/certs
+/apps/backend/certs
+/apps/frontend/nginx/certs/*.crt
+/apps/frontend/nginx/certs/*.key

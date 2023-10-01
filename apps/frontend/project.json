@@ -2,7 +2,7 @@
     "name": "frontend",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "projectType": "application",
-    "prefix": "ng-santoral",
+    "prefix": "snt",
     "sourceRoot": "apps/frontend/src",
     "tags": [],
     "targets": {
@@ -19,7 +19,7 @@
                     "apps/frontend/src/favicon.ico",
                     "apps/frontend/src/assets"
                 ],
-                "styles": ["apps/frontend/src/styles.scss"],
+                "styles": ["apps/frontend/src/styles/main.scss"],
                 "scripts": []
             },
             "configurations": {

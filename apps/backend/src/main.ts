@@ -15,6 +15,13 @@ async function bootstrap() {
   app.enableCors();
   const port = process.env.PORT || 3000;
   await app.listen(port);
+
+// const server = createServer({
+//     key:  readFileSync(`${CERTIFICATES}/key.pem`),
+//     cert: readFileSync(`${CERTIFICATES}/cert.pem`),
+// }, app.callback())
+// .listen(443);
+
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );

@@ -15,6 +15,7 @@ export class EventsController {
 
   @Get()
   async findMany(@Query('crudQuery') crudQuery: string) {
+    console.log(crudQuery);
     const matches = await this.eventsService.findMany({ crudQuery });
     return matches;
   }

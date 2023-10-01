@@ -1,0 +1,24 @@
+<div class="events">
+    <ul>
+        <li *ngIf="!events?.length">No events for {{ dayDescriptor }}</li>
+
+        <li *ngFor="let event of events | slice:0:limit" class="event">
+            <span class="event__title">
+                {{ event.title }}
+            </span>
+
+            <snt-remove-event-dialog *ngIf="allowRemoveEvent" [eventId]="event.id"></snt-remove-event-dialog>
+        </li>
+        <!-- TODO: Add popup with all events -->
+        <li *ngIf="showEventOverflow"><em>And more...</em></li>
+
+        <!-- <li class="btn"></li> -->
+        <li class="event__add-event">
+            <snt-add-event-dialog *ngIf="allowAddEvent"></snt-add-event-dialog>
+            <!-- <button class="btn btn-sm" role="button" (click)="openAddEventDialog()">
+                <i class="fa-solid fa-plus"></i><span>Add event</span>
+            </button> -->
+        </li>
+    </ul>
+</div>
+

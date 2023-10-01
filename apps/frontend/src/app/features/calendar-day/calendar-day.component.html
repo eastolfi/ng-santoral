@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="content">
+        <span class="previous fold fold-bl tactile">
+            <span class="fold__item" (click)="requestPreviousDay()"></span>
+        </span>
+
+        <div class="date">
+            <div class="date__month">
+                <span class="title_h2">{{ today.month }}</span>
+            </div>
+            <div class="date__day">
+                <span class="title">{{ today.date }}</span>
+                <span class="subtitle">{{ today.weekday }}</span>
+            </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <snt-event-list
+            [events]="today.events"
+            [allowAddEvent]="true"
+            [allowRemoveEvent]="true"
+            [limit]="5"
+        ></snt-event-list>
+
+        <div class="near-events">
+            <span>Yesterday</span>
+            <snt-event-list
+                [events]="yesterday.events"
+                [limit]="1"
+                [dayDescriptor]="'yesterday'"
+            ></snt-event-list>
+
+            <span>Tomorrow</span>
+            <snt-event-list
+                [events]="tomorrow.events"
+                [limit]="1"
+                [dayDescriptor]="'tomorrow'"
+            ></snt-event-list>
+        </div>
+
+        <span class="next fold fold-tr tactile">
+            <span class="fold__item" (click)="requestNextDay()"></span>
+        </span>
+
+        <span class="pickDate" (click)="openDialog()">
+            <i class="fa-solid fa-calendar-day"></i>
+        </span>
+    </div>
+</div>
+
+<dialog #pickDateDialog>
+    <label>Go to a date</label>
+    <form [formGroup]="form">
+        <input type="date" formControlName="date" />
+        <button (click)="closeDialog()">Cancel</button>
+        <button (click)="pickDate()" [disabled]="form.invalid">Confirm</button>
+    </form>
+</dialog>

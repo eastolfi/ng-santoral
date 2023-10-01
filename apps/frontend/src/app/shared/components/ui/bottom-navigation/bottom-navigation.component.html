@@ -1,0 +1,11 @@
+<div class="bottom-nav-container">
+    <div class="bottom-nav-items" *ngIf="config.items">
+        <ng-container *ngFor="let item of config.items">
+            <button class="bottom-nav-item" *ngIf="shouldDisplay(item)" (click)="doClick(item)">
+                <i [class]="item.icon"></i>
+                <span>{{ getDisplayLabel(item) }}</span>
+            </button>
+        </ng-container>
+    </div>
+
+</div>

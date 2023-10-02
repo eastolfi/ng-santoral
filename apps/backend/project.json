@@ -20,7 +20,10 @@
             },
             "configurations": {
                 "development": {},
-                "production": {}
+                "production": {
+                    "externalDependencies": "all",
+                    "generatePackageJson": false
+                }
             }
         },
         "serve": {
@@ -59,12 +62,16 @@
                 }
             }
         },
+        "prisma": {
+            "command": "npm run prisma:client"
+        },
         "build-bundled": {
-            "command": "nx run backend:build:production --bundle"
+            "dependsOn": ["prisma"],
+            "command": "nx run backend:build:production"
         },
         "docker-build": {
             "dependsOn": ["build-bundled"],
-            "command": "docker build -f apps/backend/Dockerfile . -t backend"
+            "command": "docker build -f apps/backend/Dockerfile . -t eastolfi/santoral-api"
         }
     },
     "tags": []

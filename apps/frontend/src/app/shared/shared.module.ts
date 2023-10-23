@@ -8,26 +8,19 @@ import { EventListComponent } from './components/event-list/event-list.component
 import { AddEventDialogComponent } from './components/add-event-dialog/add-event-dialog.component';
 import { UiModule } from './components/ui/ui.module';
 import { RemoveEventDialogComponent } from './components/remove-event-dialog/remove-event-dialog.component';
+import { ApiHealthcheckComponent } from './components/api-healthcheck/api-healthcheck.component';
 
 const components = [
     EventListComponent,
     AddEventDialogComponent,
     RemoveEventDialogComponent,
-]
+    ApiHealthcheckComponent,
+];
 
 @NgModule({
     declarations: [...components],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        UiModule],
-    providers: [
-        DateService,
-        PersistanceService,
-    ],
-    exports: [
-        ...components,
-        UiModule
-    ]
+    imports: [CommonModule, ReactiveFormsModule, UiModule],
+    providers: [DateService, PersistanceService],
+    exports: [...components, UiModule],
 })
 export class SharedModule {}

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, computed, signal } from '@angular/core';
 import { User } from '@auth0/auth0-angular';
-import { Subscription, catchError, map, mergeMap, of } from 'rxjs';
+import { Subscription, map, mergeMap } from 'rxjs';
 
 import { AuthService } from '@frontend/shared/services/auth.service';
 import {
@@ -8,8 +8,6 @@ import {
     BottomNavigationConfig
 } from '@frontend/shared/components/ui/bottom-navigation/bottom-navigation.component';
 import { ToastService } from '@frontend/shared/services/date.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@frontend/envs/environment';
 
 @Component({
     selector: 'snt-root',
@@ -22,19 +20,7 @@ export class AppComponent implements OnDestroy {
 
     private subscriptions: Subscription[] = [];
 
-    constructor(private readonly auth: AuthService, private readonly http: HttpClient) {
-        this.http.get(`${environment.apiUrl}/healthcheck`)
-        .pipe(catchError((error) => {
-            return of(error);
-        }))
-        .subscribe((result: boolean | string) => {
-            if (result === true) {
-                alert('API OK');
-            } else {
-                alert(JSON.stringify(result));
-            }
-        });
-
+    constructor(private readonly auth: AuthService) {
         this.initBottomNavigation();
     }
 

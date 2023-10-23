@@ -1,0 +1,17 @@
+.api_healthcheck {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+
+    &.ok {
+        background-color: #79dd9d;
+    }
+    &.ko {
+        background-color: #f15656;
+    }
+}

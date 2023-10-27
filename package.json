@@ -4,6 +4,8 @@
   "scripts": {
     "prisma": "prisma",
     "nx": "nx",
+    "start:backend": "npx nx serve backend",
+    "start:frontend": "npx nx serve frontend",
     "prisma:client": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "docker:backend": "npx nx docker-build backend",

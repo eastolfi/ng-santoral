@@ -19,7 +19,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         HttpClientModule,
         Auth0Module.forRoot({
             domain: environment.auth0domain,
-            clientId: environment.auth0domain,
+            clientId: environment.auth0client,
             authorizationParams: {
                 redirect_uri: window.location.origin
             }

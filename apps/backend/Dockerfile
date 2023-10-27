@@ -8,7 +8,7 @@ FROM docker.io/node:lts-alpine
 
 ENV HOST=0.0.0.0
 ENV PORT=443
-ENV DATABASE_URL=mysql://root:santoral@192.168.1.119:3306/santoral
+# ENV DATABASE_URL=URL
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ COPY package*.json ./
 
 RUN npm ci
 COPY ./prisma ./prisma
-RUN npm run prisma:client
+RUN --mount=type=secret,id=DATABASE_URL npm run prisma:client
 # RUN chown -R backend:backend .
 
 # You can remove this install step if you build with `--bundle` option.

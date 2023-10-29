@@ -99,7 +99,7 @@
         },
         "docker-build": {
             "dependsOn": ["build"],
-            "command": "docker build -f apps/frontend/Dockerfile . -t frontend"
+            "command": "docker build -f apps/frontend/Dockerfile . -t eastolfi/santoral"
         }
     }
 }

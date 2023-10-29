@@ -70,6 +70,8 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 
 ## Configuration
 
+Copy certs on /apps/frontend/nginx/certs & /apps/frontend/assets/certs
+
 ### App
 
 NG_APP_AUTH0_DOMAIN=

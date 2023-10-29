@@ -44,6 +44,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-/apps/backend/certs
+/apps/backend/src/assets/certs/*.pem
 /apps/frontend/nginx/certs/*.crt
 /apps/frontend/nginx/certs/*.key

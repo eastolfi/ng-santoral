@@ -7,7 +7,7 @@
 FROM docker.io/node:lts-alpine
 
 ENV HOST=0.0.0.0
-ENV PORT=3000
+ENV PORT=443
 ENV DATABASE_URL=mysql://root:santoral@192.168.1.119:3306/santoral
 
 WORKDIR /app
@@ -17,15 +17,17 @@ WORKDIR /app
 
 COPY dist/apps/backend backend
 
-COPY ./prisma ./prisma
 COPY package*.json ./
-RUN npm run prisma:client
 
-# RUN npm ci
+RUN npm ci
+COPY ./prisma ./prisma
+RUN npm run prisma:client
 # RUN chown -R backend:backend .
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 # RUN npm --prefix backend --omit=dev -f install
+
+EXPOSE 443
 
 CMD [ "node", "backend/main.js" ]

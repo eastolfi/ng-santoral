@@ -1,26 +1,19 @@
 import { NullableId, Params } from '@feathersjs/feathers';
 import { Calendar, Event, PrismaClient } from '@prisma/client';
+import { API_EVENT, logApiEvent } from '../logger';
 
 type FindEventsParams = {
     username?: string,
     date?: string,
 }
 
+const EVENT_NAME = 'Events';
 export class EventService {
     private prisma = new PrismaClient();
 
-    private splitDate(date?: string): string [] {
-        if (!date) {
-            return [];
-        }
-
-        return [
-            date.substring(2, 4),
-            date.substring(0, 2),
-        ]
-    }
-
     async find(params: Params<FindEventsParams>): Promise<Event[]> {
+        logApiEvent(API_EVENT.READ, EVENT_NAME, undefined, params);
+
         if (params.query?.username ) {
             return this.findEventsForUser(params.query.username, params.query.date);
         }
@@ -28,28 +21,9 @@ export class EventService {
         return await this.prisma.event.findMany();
     }
 
-    private async findEventsForUser(username: string, date?: string): Promise<Event[]> {
-        const [ day, month ] = this.splitDate(date)
-        return await this.prisma.event.findMany({
-            where: {
-                calendars: {
-                    some: {
-                        calendar: {
-                            owner: {
-                                name: {
-                                    equals: username
-                                }
-                            }
-                        }
-                    }
-                },
-                day,
-                month
-            }
-        })
-    }
-
     async create({ day, month, title }: Pick<Event, 'title' | 'day' | 'month'>) {
+        logApiEvent(API_EVENT.CREATE, EVENT_NAME);
+
         const calendar: Pick<Calendar, 'id'> = await this.prisma.calendar.findFirstOrThrow({
             select: {
                 id: true
@@ -77,6 +51,8 @@ export class EventService {
     }
 
     async remove(id: NullableId) {
+        logApiEvent(API_EVENT.DELETE, EVENT_NAME);
+
         if (!id) {
             throw new Error('mo');
         }
@@ -96,5 +72,39 @@ export class EventService {
         });
 
         return this.prisma.$transaction([deleteRelation, deleteEvent]);
+    }
+
+    //
+
+    private async findEventsForUser(username: string, date?: string): Promise<Event[]> {
+        const [ day, month ] = this.splitDate(date)
+        return await this.prisma.event.findMany({
+            where: {
+                calendars: {
+                    some: {
+                        calendar: {
+                            owner: {
+                                name: {
+                                    equals: username
+                                }
+                            }
+                        }
+                    }
+                },
+                day,
+                month
+            }
+        })
+    }
+
+    private splitDate(date?: string): string [] {
+        if (!date) {
+            return [];
+        }
+
+        return [
+            date.substring(2, 4),
+            date.substring(0, 2),
+        ]
     }
 }

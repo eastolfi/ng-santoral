@@ -14,8 +14,8 @@ DATABASE_URL="mysql://root:pwd@localhost:3306/santoral"
 
 
 ## Building docker images
-docker build -f ./Dockerfile     . -t eastolfi/santoral     --build-arg NGX_API_URL=http://staging.api.com --build-arg NGX_API_URL=http://staging.api.com 
-docker build -f ./api/Dockerfile . -t eastolfi/santoral-api
+docker build -f Dockerfile     . -t eastolfi/santoral     --build-arg NGX_API_URL=http://staging.api.com --build-arg NGX_API_URL=http://staging.api.com 
+docker build -f Dockerfile.api . -t eastolfi/santoral-api
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
 

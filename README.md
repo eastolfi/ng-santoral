@@ -72,22 +72,44 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 
 Copy certs on /apps/frontend/nginx/certs & /apps/frontend/assets/certs
 
-### App
+### Prisma
 
-NG_APP_AUTH0_DOMAIN=
-NG_APP_AUTH0_CLIENT_ID=
-NG_APP_API_BASE_URL=http://localhost:3030
+For local access, modify /root/.env file
+For Github Actions, add it as a secret
+
+* DATABASE_URL="mysql://root:pwd@localhost:3306/santoral"
+
+Change the URL as needed
 
 ### Api
 
-DATABASE_URL="mysql://root:pwd@localhost:3306/santoral"
+#### Certificates
 
+Copy the certificates (cert.pem and key.pem) to the folder of your choice, and update the env variable `CERTS_PATH`.
+It defaults to /apps/backend/src/assets/certs
 
-## Building docker images
-docker build -f Dockerfile     . -t eastolfi/santoral     --build-arg NGX_API_URL=http://staging.api.com --build-arg NGX_API_URL=http://staging.api.com 
-docker build -f Dockerfile.api . -t eastolfi/santoral-api
+### App
+
+#### Environment variables
+
+For local access, modify /apps/frontend/.env.local file
+For Github Actions, add them as secrets
+
+NG_APP_AUTH0_DOMAIN=YOUR_AUTH0_DOMAIN
+NG_APP_AUTH0_CLIENT_ID=YOUT_AUTH0_CLIEND_ID
+# Only needed For local access
+NG_APP_API_BASE_URL=http://localhost:3030
+
+#### Certificates
+
+Copy the `nginx.crt` and `nginx.key` to the folder /apps/frontend/nginx/certs.
+For Github Actions, add the content of each file as a secret (`APP_NGINX_CERT` and `APP_NGINX_CERT_KEY`)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
+
+## DB
+
+npx prisma migrate reset
 
 ## Development server
 

@@ -48,9 +48,9 @@ jobs:
       - name: Create certificates for NgInx
         run: |
           touch apps/frontend/nginx/certs/nginx.crt
-          echo ${{secrets.APP_NGINX_CERT}} >> apps/frontend/nginx/certs/nginx.crt
+          echo "${{secrets.APP_NGINX_CERT}}" >> apps/frontend/nginx/certs/nginx.crt
           touch apps/frontend/nginx/certs/nginx.key
-          echo ${{secrets.APP_NGINX_CERT_KEY}} >> apps/frontend/nginx/certs/nginx.key
+          echo "${{secrets.APP_NGINX_CERT_KEY}}" >> apps/frontend/nginx/certs/nginx.key
 
       - run: npx nx build frontend
 

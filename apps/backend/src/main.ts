@@ -8,30 +8,17 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
 import { readFileSync } from 'fs';
-import { isAbsolute, join } from 'path';
+import { join } from 'path';
 import express from 'express';
 import { ServerOptions, createServer } from 'spdy';
 
 import { AppModule } from './app/app.module';
 
+// Load env variables
 ConfigModule.forRoot();
 
-const getCertsPath = (): string => {
-    const path = process.env.CERTS_PATH;
-
-    if (!path) {
-        throw new Error();
-    }
-
-    if (isAbsolute(path)) {
-        return path;
-    }
-
-    return join(__dirname, path);
-}
-
 async function bootstrap() {
-    const certs = getCertsPath();
+    const certs = join(__dirname, './assets/certs');
     const ops: ServerOptions = {
         key:  readFileSync(`${certs}/key.pem`),
         cert: readFileSync(`${certs}/cert.pem`),

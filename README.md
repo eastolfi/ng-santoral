@@ -85,8 +85,8 @@ Change the URL as needed
 
 #### Certificates
 
-Copy the certificates (cert.pem and key.pem) to the folder of your choice, and update the env variable `CERTS_PATH`.
-It defaults to /apps/backend/src/assets/certs
+Copy the certificates `cert.pem` and `key.pem` to the folder /apps/backend/src/assets/certs.
+For Github Actions, add the content of each file as a secret (`API_NEST_CERT` and `API_NEST_CERT_KEY`)
 
 ### App
 

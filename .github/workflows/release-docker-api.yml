@@ -38,6 +38,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create env file
+        run: |
+          touch .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+
+      - name: Create certificates for NgInx
+        run: |
+          touch apps/backend/src/assets/certs/cert.pem
+          echo "${{secrets.API_NEST_CERT}}" >> apps/backend/src/assets/certs/cert.pem
+          touch apps/backend/src/assets/certs/key.pem
+          echo "${{secrets.API_NEST_CERT_KEY}}" >> apps/backend/src/assets/certs/key.pem
+
       - name: Build API
         run: npx nx build-bundled backend
 
@@ -63,4 +75,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           # Inject the secret so it can be used on Dockerfile with --mount
-          secrets: DATABASE_URL=${{ secrets.DATABASE_URL }}
+          secrets: |
+            "DATABASE_URL=${{ secrets.DATABASE_URL }}"

@@ -67,7 +67,7 @@ export class CalendarDayComponent implements OnInit, OnDestroy {
     @ViewChild('pickDateDialog')
     private readonly pickDateDialog!: ElementRef<HTMLDialogElement>;
     public form = this.fb.group({
-        date: this.fb.control(new Date().toISOString(), Validators.required)
+        date: this.fb.control(null, Validators.required)
     });
     public openDialog(): void {
         this.pickDateDialog.nativeElement.showModal();

@@ -1,14 +1,19 @@
 <ng-container *ngIf="isAuthorized">
-    <button class="btn btn-sm" role="button" (click)="openDialog()">
+    <button class="btn accent btn-lg m-auto" role="button" (click)="openDialog()">
         <i class="fa-solid fa-plus"></i><span>Add event</span>
     </button>
 
     <dialog #addEventDialog>
-        <label>Event</label>
         <form [formGroup]="form">
-            <input type="text" formControlName="event" />
-            <button class="btn btn-sm" role="button" (click)="closeDialog()">Cancel</button>
-            <button  class="btn btn-sm" role="button"(click)="addEvent()" [disabled]="form.invalid">Create</button>
+            <div class="">
+                <label for="event">Event</label>
+                <input id="event" type="text" formControlName="event" />
+            </div>
+
+            <div class="dialog-actions">
+                <button class="btn btn-sm mr-2" role="button" (click)="closeDialog()">Cancel</button>
+                <button class="btn accent btn-sm" role="button" (click)="addEvent()" [disabled]="form.invalid">Create</button>
+            </div>
         </form>
     </dialog>
 </ng-container>

@@ -1,7 +1,8 @@
+@use 'base';
+@use 'layout';
 @use 'reset';
 @use 'typography';
-@use 'button';
-
+@use './components/index';
 
 /* https://codepen.io/cseeds/pen/rNOBQW */
 /* $card-revese-color: #72cbd1; */

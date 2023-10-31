@@ -57,10 +57,15 @@
 </div>
 
 <dialog #pickDateDialog>
-    <label>Go to a date</label>
     <form [formGroup]="form">
-        <input type="date" formControlName="date" />
-        <button (click)="closeDialog()">Cancel</button>
-        <button (click)="pickDate()" [disabled]="form.invalid">Confirm</button>
+        <div class="datepicker">
+            <label for="date">Go to a date</label>
+            <input id="date" type="date" formControlName="date" />
+        </div>
+
+        <div class="dialog-actions">
+            <button class="btn btn-sm mr-2" role="button" (click)="closeDialog()">Cancel</button>
+            <button class="btn accent btn-sm" role="button" (click)="pickDate()" [disabled]="form.invalid">Confirm</button>
+        </div>
     </form>
 </dialog>

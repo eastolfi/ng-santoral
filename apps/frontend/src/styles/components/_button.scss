@@ -1,22 +1,41 @@
+$ratio: 3.74;
+$cta-color: rgb(0, 102, 254);
+$light-color-bg: rgb(238, 241, 247);
+$dark-color-bg: rgb(55, 65, 81);
+$grey-color: rgb(107, 114, 128);
+$leading: 0.025em;
+
 .btn {
-    align-items: center;
+    /* align-items: center; */
     appearance: none;
-    background-color: #fff;
-    border-radius: 24px;
-    border-style: none;
+    /* background-color: #fff; */
+    background-color: $light-color-bg;
+    /* border-radius: 24px; */
+    border-radius: calc(3px * $ratio);
+    /* border-style: none; */
+    border: none;
     box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
     box-sizing: border-box;
-    color: #3c4043;
+    /* color: #3c4043; */
+    color: $grey-color;
     cursor: pointer;
-    display: inline-flex;
+    /* display: inline-flex; */
+    display: block;
     fill: currentcolor;
     font-family: "Google Sans",Roboto,Arial,sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    height: 48px;
+    /* font-family: inherit; */
+    /* font-size: 14px; */
+    font-size: large;
+    /* font-weight: 500; */
+    font-weight: 700;
+    /* height: 48px; */
+    height: 44px;
     justify-content: center;
-    letter-spacing: .25px;
+    /* letter-spacing: .25px; */
+    letter-spacing: calc(3 * $leading);
     line-height: normal;
+    /*  */
+    margin-top: 2rem;
     max-width: 100%;
     overflow: visible;
     padding: 2px 24px;
@@ -27,18 +46,45 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    width: auto;
+    /* width: auto; */
+    width: calc(44px * $ratio);
     will-change: transform,opacity;
     z-index: 0;
 
+    &:focus {
+        outline: none;
+        border: 0.0625rem solid transparent;
+        box-shadow: 0 0 0 0.125rem #fff, 0 0 0 0.2rem $dark-color-bg;
+    }
+
+    &.accent {
+        background-color: $cta-color;
+        color: white;
+    }
+
     &.btn-sm {
         height: 32px;
+        width: calc(32px * $ratio);
+        padding: 0;
+    }
+    &.btn-lg {
+        /* height: 32px; */
+        width: calc(52px * $ratio);
+        /* padding: 0; */
+    }
+
+    &[disabled] {
+        box-shadow: none;
+        background-color: #c5c5c5;
+        color: #4d4c4c;
     }
 
     i {
         margin-right: 5px;
     }
 }
+
+
 
 /* .button-17:hover {
   background: #F6F9FE;

@@ -5,15 +5,19 @@ import { AppService } from './app.service';
 import { PrismaCrudModule } from 'nestjs-prisma-crud';
 import { PrismaService } from './prisma.service';
 import { EventsModule } from './events/events.module';
+import { EventReferentialModule } from './event-referential/event-referential.module';
+import { ImportModule } from './import/import.module';
 
 @Module({
-  imports: [
-    PrismaCrudModule.register({
-      prismaService: PrismaService
-    }),
-    EventsModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        PrismaCrudModule.register({
+            prismaService: PrismaService,
+        }),
+        EventsModule,
+        EventReferentialModule,
+        ImportModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

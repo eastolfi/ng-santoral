@@ -43,15 +43,21 @@ export class AppComponent implements OnDestroy {
             displaySignal: nonConnectedSignal
         })
         .addItem({
+            label: 'Import',
+            icon: 'fa-solid fa-file-import',
+            action: '/import',
+            displaySignal: isConnectedSignal
+        })
+        // .addItem({
+        //     label: computed(() => userSignal()?.nickname || userSignal()?.email || 'Account'),
+        //     icon: 'fa-regular fa-user',
+        //     action: '',
+        //     displaySignal: isConnectedSignal
+        // })
+        .addItem({
             label: 'Log Out',
             icon: 'fa-solid fa-arrow-right-from-bracket',
             action: () => this.auth.logout(),
-            displaySignal: isConnectedSignal
-        })
-        .addItem({
-            label: computed(() => userSignal()?.nickname || userSignal()?.email || 'Account'),
-            icon: 'fa-regular fa-user',
-            action: '',
             displaySignal: isConnectedSignal
         })
         .finish();

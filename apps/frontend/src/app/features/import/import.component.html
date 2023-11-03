@@ -1,0 +1,23 @@
+<div class="select" (change)="onSelectionChanged($event)">
+    <span class="selectLabel" id="jobLabel">Events to import</span>
+    <div class="selectWrapper">
+        <select class="selectNative" aria-labelledby="jobLabel">
+            <option value="" disabled="" selected="">Choose an import...</option>
+            <option *ngFor="let import of availableImports" value="{{ import.type }}_{{ import.country }}">
+                {{ import.type }} ({{ import.country }})
+            </option>
+        </select>
+    </div>
+</div>
+
+<button [disabled]="!isValidSelection" class="btn accent m-auto" (click)="importEventes()">Import</button>
+
+<div *ngIf="eventsImported" class="alert alert-success">
+  <!-- <div class="icon__wrapper">
+    <span class="mdi mdi-alert-outline"></span>
+  </div> -->
+  <p>Number of events imported: {{ eventsImported }}</p>
+  <!-- <span class="mdi mdi-open-in-new open"></span>
+  <span class="mdi mdi-close close"></span> -->
+</div>
+

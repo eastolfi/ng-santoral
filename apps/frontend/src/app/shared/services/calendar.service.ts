@@ -6,7 +6,7 @@ import { Event } from '@prisma/client';
 import { DateService } from '@frontend/shared/services/date.service';
 import { Calendar, PersistanceService } from '@frontend/shared/services/persistance.service';
 
-export type Day = {
+export type DayWithEvents = {
     originalDate: Date;
     month: string;
     weekday: string;
@@ -14,7 +14,7 @@ export type Day = {
     events: Pick<Event, 'id' | 'title'>[]
 }
 
-const defaultDay: Day = {
+const defaultDay: DayWithEvents = {
     originalDate: new Date(),
     month: '--',
     weekday: '--',
@@ -24,9 +24,9 @@ const defaultDay: Day = {
 
 @Injectable()
 export class CalendarService {
-    public today$ = new BehaviorSubject<Day>(defaultDay);
-    public yesterday$ = new BehaviorSubject<Day>(defaultDay);
-    public tomorrow$ = new BehaviorSubject<Day>(defaultDay);
+    public today$ = new BehaviorSubject<DayWithEvents>(defaultDay);
+    public yesterday$ = new BehaviorSubject<DayWithEvents>(defaultDay);
+    public tomorrow$ = new BehaviorSubject<DayWithEvents>(defaultDay);
 
     private user = 'eastolfi';
 
@@ -73,7 +73,7 @@ export class CalendarService {
         // )
     }
 
-    public getEventsForDate(original: Date): Observable<Day> {
+    private getEventsForDate(original: Date): Observable<DayWithEvents> {
         return this.getEvents(this.user, original)
         .pipe(
             map((events: Pick<Event, 'id' | 'title'>[]) => ({
@@ -82,7 +82,7 @@ export class CalendarService {
                 weekday: this.dateService.getWeekDate(original),
                 month: this.dateService.getMonth(original),
                 events
-            } as Day))
+            } as DayWithEvents))
         )
     }
 
@@ -94,16 +94,16 @@ export class CalendarService {
     // }
 
     private changeDate(newDate: Date): void {
-        this.getEventsForDate(newDate).subscribe((date: Day) => {
+        this.getEventsForDate(newDate).subscribe((date: DayWithEvents) => {
             this.dateService.today = newDate;
             this.today$.next(date);
         });
 
-        this.getEventsForDate(this.dateService.add(-1, newDate)).subscribe((date: Day) => {
+        this.getEventsForDate(this.dateService.add(-1, newDate)).subscribe((date: DayWithEvents) => {
             this.yesterday$.next(date);
         });
 
-        this.getEventsForDate(this.dateService.add(1, newDate)).subscribe((date: Day) => {
+        this.getEventsForDate(this.dateService.add(1, newDate)).subscribe((date: DayWithEvents) => {
             this.tomorrow$.next(date);
         });
     }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, defaultIfEmpty, map, of, tap } from 'rxjs';
 import { Event } from '@prisma/client';
 
+import { ApiResponse } from '@frontend/models/response';
 import { DateService, ToastService } from './date.service';
 import { environment } from '../../../environments/environment';
 
@@ -12,15 +13,7 @@ export type Calendar = {
     }
 };
 
-type PrismaOrder = { [field: string]: 'asc' | 'desc' };
-type ApiResponse<M> = {
-    data: M[];
-    totalRecords: number;
-    pageCount: number;
-    page: number;
-    pageSize: number;
-    orderBy: PrismaOrder[];
-}
+
 
 @Injectable()
 export class PersistanceService {

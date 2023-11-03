@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { AuthService } from '@frontend/shared/services/auth.service';
 import { environment } from '@frontend/envs/environment';
+import { CalendarService } from '@frontend/shared/services/calendar.service';
 
 @Component({
     selector: 'snt-remove-event-dialog',
@@ -21,6 +22,7 @@ export class RemoveEventDialogComponent implements OnDestroy {
     constructor(
         private readonly http: HttpClient,
         private readonly authService: AuthService,
+        private readonly calendarService: CalendarService,
     ) {
         this.subscriptions.push(this.authService.isAuthorized$('Admin').subscribe(authorized => {
             this.isAuthorized = authorized;
@@ -32,7 +34,9 @@ export class RemoveEventDialogComponent implements OnDestroy {
     }
 
     public deleteEvent() {
-        this.http.delete(`${environment.apiUrl}/events/${this.eventId}`)
-            .subscribe(() => window.location.reload());
+        if (confirm('Are you sure?')) {
+            this.http.delete(`${environment.apiUrl}/events/${this.eventId}`)
+                .subscribe(() => this.calendarService.navigateToDate(this.calendarService.today$.value.originalDate));
+        }
     }
 }

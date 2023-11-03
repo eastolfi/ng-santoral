@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, signal, ViewChild, ElementRef } from '@an
 import { FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { CalendarService, Day } from '@frontend/shared/services/calendar.service';
+import { CalendarService, DayWithEvents } from '@frontend/shared/services/calendar.service';
 // import { DateService } from '../../shared/services/date.service';
 
 @Component({
@@ -11,21 +11,21 @@ import { CalendarService, Day } from '@frontend/shared/services/calendar.service
     styleUrls: ['./calendar-day.component.scss'],
 })
 export class CalendarDayComponent implements OnInit, OnDestroy {
-    public get today(): Day {
+    public get today(): DayWithEvents {
         return this._today();
     }
 
-    public get yesterday(): Day {
+    public get yesterday(): DayWithEvents {
         return this._yesterday();
     }
 
-    public get tomorrow(): Day {
+    public get tomorrow(): DayWithEvents {
         return this._tomorrow();
     }
 
-    private _today = signal<Day>(this.calendarService.today$.value);
-    private _yesterday = signal<Day>(this.calendarService.yesterday$.value);
-    private _tomorrow = signal<Day>(this.calendarService.tomorrow$.value);
+    private _today = signal<DayWithEvents>(this.calendarService.today$.value);
+    private _yesterday = signal<DayWithEvents>(this.calendarService.yesterday$.value);
+    private _tomorrow = signal<DayWithEvents>(this.calendarService.tomorrow$.value);
     private subscriptions: Subscription[] = [];
 
     constructor(
@@ -35,15 +35,15 @@ export class CalendarDayComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.subscriptions.push(this.calendarService.today$.subscribe((date: Day) => {
+        this.subscriptions.push(this.calendarService.today$.subscribe((date: DayWithEvents) => {
             this._today.set(date);
         }));
 
-        this.subscriptions.push(this.calendarService.yesterday$.subscribe((date: Day) => {
+        this.subscriptions.push(this.calendarService.yesterday$.subscribe((date: DayWithEvents) => {
             this._yesterday.set(date);
         }));
 
-        this.subscriptions.push(this.calendarService.tomorrow$.subscribe((date: Day) => {
+        this.subscriptions.push(this.calendarService.tomorrow$.subscribe((date: DayWithEvents) => {
             this._tomorrow.set(date);
         }));
     }

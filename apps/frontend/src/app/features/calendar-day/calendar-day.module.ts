@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { CalendarService } from '@frontend/shared/services/calendar.service';
 import { SharedModule } from '@frontend/shared/shared.module';
 
 import { CalendarDayRoutingModule } from './calendar-day-routing.module';
@@ -16,7 +15,7 @@ import { CalendarDayComponent } from './calendar-day.component';
         ReactiveFormsModule,
         CalendarDayRoutingModule,
     ],
-    providers: [CalendarService],
+    providers: [],
     exports: [],
 })
 export class CalendarDayModule {}

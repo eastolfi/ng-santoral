@@ -30,6 +30,7 @@ export class ImportComponent implements OnInit {
         this.importService.importEvents(this.selection).subscribe(({ data }) => {
             this.eventsImported = data[0];
             this.calendarService.resetToday();
+            // Clear message
             setTimeout(() => this.eventsImported = undefined, 3000);
         });
     }

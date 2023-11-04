@@ -11,10 +11,15 @@
     }
 
     .event {
-        list-style-type: "📅";
-        list-style-position: inside;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        /* list-style-type: "📅";
+        list-style-position: inside; */
+        margin-top: 10px;
+        /* margin-bottom: 5px; */
+
+        .event-container {
+            display: flex;
+            justify-content: space-between;
+        }
     }
 
     .event__add-event {

@@ -37,4 +37,12 @@ export class EventListComponent {
     public get showEventOverflow(): boolean {
         return this._events.length > this._limit;
     }
+
+    public get eventsShown(): Pick<Event, 'id' | 'title'>[] {
+        return this.showEventOverflow ? this.events.slice(0, this.limit) : this.events;
+    }
+
+    public get eventsExtra(): Pick<Event, 'id' | 'title'>[] {
+        return this.showEventOverflow ? this.events.slice(this.limit, this.events.length) : [];
+    }
 }

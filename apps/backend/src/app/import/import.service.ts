@@ -11,7 +11,7 @@ export class ImportService {
         })
     }
 
-    public async importEventsFromReferential(type: EventType, country: string) {
+    public async importEventsFromReferential(email: string, type: EventType, country: string) {
         const events = await this.prisma.eventReferential.findMany({
             where: {
                 AND: {
@@ -31,10 +31,14 @@ export class ImportService {
             },
         }));
 
-        const EMAIL = 'eastolfi91@gmail.com';
-        const currentUser = await this.prisma.user.findUnique({
+        const currentUser = await this.prisma.user.upsert({
+            create: {
+                email,
+                name: email.split('@')[0]
+            },
+            update: {},
             where: {
-                email: EMAIL
+                email
             }
         })
 

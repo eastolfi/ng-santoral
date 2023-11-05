@@ -7,6 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import express from 'express';
@@ -20,12 +21,15 @@ ConfigModule.forRoot();
 async function bootstrap() {
     const certs = join(__dirname, './assets/certs');
     const ops: ServerOptions = {
-        key:  readFileSync(`${certs}/key.pem`),
+        key: readFileSync(`${certs}/key.pem`),
         cert: readFileSync(`${certs}/cert.pem`),
-    }
+    };
     const expressApp = express();
-    const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
-    const server = createServer(ops, expressApp)
+    const app = await NestFactory.create(
+        AppModule,
+        new ExpressAdapter(expressApp),
+    );
+    const server = createServer(ops, expressApp);
 
     // Used for giving a global namespace: http:localhost/api
     const globalPrefix = 'api';
@@ -35,6 +39,14 @@ async function bootstrap() {
     console.log(process.env.PORT);
     const port = process.env.PORT || 443;
     // await app.listen(port);
+
+    const swaggerConfig = new DocumentBuilder()
+        .setTitle('Santoral - API')
+        .setDescription('Santoral - API')
+        .setVersion('1.0')
+        .build();
+    const swaggerDoc = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup('swagger', app, swaggerDoc);
 
     await app.init();
     await server.listen(port);

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { AuthService as Auth0Service, User } from '@auth0/auth0-angular';
-import { Observable, Subscription, filter, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 
 @Injectable()
 export class AuthService implements OnDestroy {
@@ -25,7 +25,7 @@ export class AuthService implements OnDestroy {
 
     public logout(): void {
         this.auth0.logout({
-            logoutParams: { returnTo: document.location.href }
+            logoutParams: { returnTo: document.location.origin }
         });
     }
 

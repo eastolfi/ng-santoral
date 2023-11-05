@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, mergeMap, of, retry, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Event } from '@prisma/client';
+import { User } from '@auth0/auth0-spa-js';
 
+import { environment } from '@frontend/envs/environment';
 import { DateService } from '@frontend/shared/services/date.service';
 import { Calendar, PersistanceService } from '@frontend/shared/services/persistance.service';
+import { AuthService } from '@frontend/shared/services/auth.service';
 
 export type DayWithEvents = {
     originalDate: Date;
@@ -22,18 +25,22 @@ const defaultDay: DayWithEvents = {
     events: []
 }
 
+interface UserAuth0 extends User {
+    ['santoral/email']: string;
+    ['santoral/roles']: string[];
+}
+
 @Injectable()
 export class CalendarService {
     public today$ = new BehaviorSubject<DayWithEvents>(defaultDay);
     public yesterday$ = new BehaviorSubject<DayWithEvents>(defaultDay);
     public tomorrow$ = new BehaviorSubject<DayWithEvents>(defaultDay);
 
-    private user = 'eastolfi';
-
     constructor(
         private readonly dateService: DateService,
         private readonly persistanceService: PersistanceService,
         private readonly http: HttpClient,
+        private readonly auth: AuthService,
     ) {
         this.changeDate(this.dateService.today);
     }
@@ -55,27 +62,28 @@ export class CalendarService {
     }
 
     public addEvent(title: string): Observable<boolean> {
-        return this.http.post('http://localhost:3030/events', {
+        return this.http.post(`${environment.apiUrl}/events`, {
             day: this.dateService.getDay(this.dateService.today),
             month: this.dateService.getMonthShort(this.dateService.today),
             title
         }).pipe(map(() => true))
-
-        // return this.persistanceService.getUserData(this.user)
-        // .pipe(
-        //     map(({ events }: Calendar) => ({
-        //         events: {
-        //             ...events,
-        //             [date]: [ ...(events[date] || []), title ]
-        //         }
-        //     })),
-        //     mergeMap((updatedUserData: Calendar) => this.persistanceService.setUserData(this.user, updatedUserData))
-        // )
     }
 
     private getEventsForDate(original: Date): Observable<DayWithEvents> {
-        return this.getEvents(this.user, original)
-        .pipe(
+        return this.auth.auth0.isAuthenticated$.pipe(
+            mergeMap(connected => this.auth.auth0.user$.pipe(map(user => ({ connected, user: user as UserAuth0 })))),
+            mergeMap(({ connected, user }) => {
+                if (connected && user?.['santoral/email']) {
+                    return of(user['santoral/email']);
+                } else {
+                    return throwError(() => new Error(`Can't find user information`))
+                }
+            }),
+            retry({
+                count: 1,
+                delay: 1000,
+            }),
+            mergeMap(email => this.getEvents(email, original)),
             map((events: Pick<Event, 'id' | 'title'>[]) => ({
                 originalDate: new Date(original),
                 date: this.dateService.getDay(original),
@@ -85,13 +93,6 @@ export class CalendarService {
             } as DayWithEvents))
         )
     }
-
-    // public findAllEvents(): Observable<{ [user: string]: Calendar }> {
-    //     return this.persistanceService.getData()
-    //     .pipe(
-    //         map(db => db.calendars),
-    //     );
-    // }
 
     private changeDate(newDate: Date): void {
         this.getEventsForDate(newDate).subscribe((date: DayWithEvents) => {

@@ -83,6 +83,14 @@ Change the URL as needed
 
 ### Api
 
+#### Environment variables
+
+For local access, modify /apps/backend/.env.local file
+For Github Actions, add them as secrets
+
+AUTH0_ISSUER_URL=YOUR_AUTH0_ISSUER_URL       (GH Secrete: AUTH0_ISSUER)
+AUTH0_AUDIENCE=YOUR_AUTH0_AUDIENCE           (GH Secrete: AUTH0_AUDIENCE)
+
 #### Certificates
 
 Copy the certificates `cert.pem` and `key.pem` to the folder /apps/backend/src/assets/certs.
@@ -95,10 +103,11 @@ For Github Actions, add the content of each file as a secret (`API_NEST_CERT` an
 For local access, modify /apps/frontend/.env.local file
 For Github Actions, add them as secrets
 
-NG_APP_AUTH0_DOMAIN=YOUR_AUTH0_DOMAIN
-NG_APP_AUTH0_CLIENT_ID=YOUT_AUTH0_CLIEND_ID
+NG_APP_AUTH0_DOMAIN=YOUR_AUTH0_DOMAIN        (GH Secrete: AUTH0_DOMAIN)
+NG_APP_AUTH0_CLIENT_ID=YOUT_AUTH0_CLIEND_ID  (GH Secrete: AUTH0_CLIENT_ID)
+NG_APP_AUTH0_AUDIENCE=YOUR_AUTH0_AUDIENCE    (GH Secrete: AUTH0_AUDIENCE)
 # Only needed For local access
-NG_APP_API_BASE_URL=http://localhost:3030
+NG_APP_API_BASE_URL=https://localhost:443/api
 
 #### Certificates
 
@@ -107,9 +116,17 @@ For Github Actions, add the content of each file as a secret (`APP_NGINX_CERT` a
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
 
+## Running in local
+
+Run `npm run start:backend` and `npm run start:frontend` to start both applications. Then, to enable communication between each of them, access
+the API application in the browser (https://localhost/api) in order to trust the certificates.
+Then you can access http://localhost:4200 normally.
+
 ## DB
 
 npx prisma migrate reset
+npx prisma format
+ts-node prisma/data-migrations/XXX.ts
 
 ## Development server
 
@@ -118,6 +135,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+`npx nx g --project frontend @nx/angular:component component-name`
 
 ## Build
 

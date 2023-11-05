@@ -7,12 +7,18 @@ import {
     Param,
     Delete,
     Query,
+    UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
 import { CreateEventReferentialDto } from './dto/create-event-referential.dto';
 import { UpdateEventReferentialDto } from './dto/update-event-referential.dto';
 import { EventReferentialService } from './event-referential.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('event-referential')
+@UseGuards(AuthGuard('jwt'))
+@ApiTags('REFERENTIAL')
 export class EventReferentialController {
     constructor(
         private readonly eventReferentialService: EventReferentialService,

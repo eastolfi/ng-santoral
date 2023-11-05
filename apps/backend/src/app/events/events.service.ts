@@ -4,11 +4,6 @@ import { Calendar, Event, PrismaClient } from '@prisma/client';
 import { AppPrismaCrudService } from '../app-prisma-crud.service';
 // import { API_EVENT, logApiEvent } from '../logger';
 
-type FindEventsParams = {
-    username?: string,
-    date?: string,
-}
-
 @Injectable()
 export class EventsService extends AppPrismaCrudService<Event> {
     private prisma = new PrismaClient();
@@ -19,6 +14,36 @@ export class EventsService extends AppPrismaCrudService<Event> {
             allowedJoins: ['calendars.calendar.owner'],
             defaultJoins: [],
         });
+    }
+
+    async ensureCalendar(email: string): Promise<Calendar> {
+        const currentUser = await this.prisma.user.upsert({
+            create: { email },
+            update: {},
+            where: { email }
+        })
+        console.log(currentUser);
+
+        return await this.prisma.calendar.upsert({
+            create: {
+                name: 'default',
+                events: {
+                    create: []
+                },
+                owner: {
+                    connect: {
+                        id: currentUser.id
+                    }
+                }
+            },
+            update: {},
+            where: {
+                name_ownerId: {
+                    name: 'default',
+                    ownerId: currentUser.id
+                }
+            }
+        })
     }
 
     async create2({ day, month, title }: Pick<Event, 'title' | 'day' | 'month'>) {

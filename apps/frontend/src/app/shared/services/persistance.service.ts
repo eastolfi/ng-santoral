@@ -26,15 +26,15 @@ export class PersistanceService {
         private readonly http: HttpClient,
     ) {}
 
-    private findEventsForUser(username: string, date: Date): Observable<Event[]> {
+    private findEventsForUser(email: string, date: Date): Observable<Event[]> {
         const query = {
             where: {
                 calendars: {
                     some: {
                         calendar: {
                             owner: {
-                                name: {
-                                    equals: username
+                                email: {
+                                    equals: email
                                 }
                             }
                         }
@@ -44,7 +44,6 @@ export class PersistanceService {
                 month: this.dateService.getMonthShort(date)
             }
         }
-        // return this.http.get<Event[]>(`${environment.apiUrl}/events?username=${username}&date=${this.getFormattedDate(date)}`)
         return this.http.get<ApiResponse<Event>>(`${environment.apiUrl}/events?${new URLSearchParams({ crudQuery: JSON.stringify(query) })}`)
             .pipe(tap(({ totalRecords }) => console.log(`Events for ${date}: ${totalRecords}`)), map(({ data }) => data));
     }

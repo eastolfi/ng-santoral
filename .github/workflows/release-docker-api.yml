@@ -38,10 +38,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create env file
+      - name: Create Prisma env file
         run: |
           touch .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+
+      - name: Create env file
+        run: |
+          touch apps/backend/.env.local
+          echo AUTH0_ISSUER_URL=${{secrets.AUTH0_ISSUER}} >> apps/backend/.env.local
+          echo AUTH0_AUDIENCE=${{secrets.AUTH0_AUDIENCE}} >> apps/backend/.env.local
 
       - name: Create certificates for NgInx
         run: |

@@ -23,11 +23,13 @@ model Calendar {
   owner   User                @relation(fields: [ownerId], references: [id])
   ownerId Int
   events  EventsForCalendar[]
+
+  @@unique([ name, ownerId ])
 }
 
 model EventsForCalendar {
   id         Int      @id @default(autoincrement())
-  event      Event    @relation(fields: [eventId], references: [id])
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId    Int
   calendar   Calendar @relation(fields: [calendarId], references: [id])
   calendarId Int
@@ -38,4 +40,19 @@ model User {
   email     String     @unique
   name      String?
   calendars Calendar[]
+}
+
+model EventReferential {
+  id      Int       @id @default(autoincrement())
+  title   String    @db.VarChar(100)
+  day     String    @db.VarChar(2)
+  month   String    @db.VarChar(2)
+  country String    @db.VarChar(2)
+  type    EventType
+}
+
+enum EventType {
+  HOLIDAY
+  SAINT
+  BIRTHDAY
 }

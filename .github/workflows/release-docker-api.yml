@@ -1,7 +1,11 @@
 name: API Publish Docker image
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - "Release"
+    types:
+      - completed
     branches:
       - master
     paths:

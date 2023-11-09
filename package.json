@@ -1,6 +1,6 @@
 {
   "name": "ng-santoral",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "prisma": "prisma",
     "nx": "nx",

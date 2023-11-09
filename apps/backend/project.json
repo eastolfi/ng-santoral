@@ -72,6 +72,15 @@
         "docker-build": {
             "dependsOn": ["build-bundled"],
             "command": "docker build -f apps/backend/Dockerfile . -t eastolfi/santoral-api"
+        },
+        "version": {
+            "executor": "@jscutlery/semver:version",
+            "options": {
+                "preset": "angular",
+                "tagPrefix": "{projectName}-",
+                "commitMessageFormat": "release({projectName}): release version {version}",
+                "skipCommitTypes": ["docs", "ci", "release"]
+            }
         }
     },
     "tags": []

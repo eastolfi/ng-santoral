@@ -114,7 +114,15 @@
                 "preset": "angular",
                 "tagPrefix": "{projectName}-",
                 "commitMessageFormat": "release({projectName}): release version {version}",
-                "skipCommitTypes": ["docs", "ci", "release"]
+                "skipCommitTypes": ["docs", "ci", "release"],
+                "postTargets": ["backend:github"]
+            }
+        },
+        "github": {
+            "executor": "@jscutlery/semver:github",
+            "options": {
+                "tag": "{tag}",
+                "notes": "{notes}"
             }
         }
     }

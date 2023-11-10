@@ -9,16 +9,17 @@ import {
     Query,
     UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { CreateEventReferentialDto } from './dto/create-event-referential.dto';
 import { UpdateEventReferentialDto } from './dto/update-event-referential.dto';
 import { EventReferentialService } from './event-referential.service';
-import { ApiTags } from '@nestjs/swagger';
+import { API_BEARER_NAME, AuthJwtGuard, Tags } from '../shared/constants.api';
 
 @Controller('event-referential')
-@UseGuards(AuthGuard('jwt'))
-@ApiTags('REFERENTIAL')
+@ApiTags(Tags.REFERENTIAL)
+@UseGuards(AuthJwtGuard())
+@ApiBearerAuth(API_BEARER_NAME)
 export class EventReferentialController {
     constructor(
         private readonly eventReferentialService: EventReferentialService,

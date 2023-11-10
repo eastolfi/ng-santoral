@@ -90,6 +90,7 @@ For Github Actions, add them as secrets
 
 AUTH0_ISSUER_URL=YOUR_AUTH0_ISSUER_URL       (GH Secrete: AUTH0_ISSUER)
 AUTH0_AUDIENCE=YOUR_AUTH0_AUDIENCE           (GH Secrete: AUTH0_AUDIENCE)
+AUTH0_CLIENT_ID=YOUT_AUTH0_CLIEND_ID         (GH Secrete: AUTH0_CLIENT_ID)
 
 #### Certificates
 

@@ -1,14 +1,15 @@
 import { EventType } from '@prisma/client';
 import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { ImportService } from './import.service';
 import { RequestAuth0 } from '../models/request.auth0';
+import { API_BEARER_NAME, AuthJwtGuard, Tags } from '../shared/constants.api';
 
 @Controller('import')
-@UseGuards(AuthGuard('jwt'))
-@ApiTags('EVENTS')
+@ApiTags(Tags.IMPORT, Tags.EVENTS)
+@UseGuards(AuthJwtGuard())
+@ApiBearerAuth(API_BEARER_NAME)
 export class ImportController {
     constructor(
         private readonly importService: ImportService,

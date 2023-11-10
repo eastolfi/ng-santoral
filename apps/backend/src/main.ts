@@ -14,6 +14,7 @@ import express from 'express';
 import { ServerOptions, createServer } from 'spdy';
 
 import { AppModule } from './app/app.module';
+import { API_BEARER_NAME } from './app/shared/constants.api';
 
 // Load env variables
 ConfigModule.forRoot();
@@ -44,9 +45,39 @@ async function bootstrap() {
         .setTitle('Santoral - API')
         .setDescription('Santoral - API')
         .setVersion('1.0')
+        .addOAuth2(
+            {
+                type: 'oauth2',
+                description: 'Auth0 login',
+                name: 'Authorization',
+                flows: {
+                    implicit: {
+                        authorizationUrl: `${process.env.AUTH0_ISSUER_URL}/authorize?audience=${process.env.AUTH0_AUDIENCE}`,
+                        tokenUrl: process.env.AUTH0_AUDIENCE,
+                        scopes: { 'User.Read': 'Read user profile' }
+                    },
+                },
+                scheme: 'Bearer',
+                bearerFormat: 'Bearer',
+                in: 'Header',
+            },
+            API_BEARER_NAME,
+        )
         .build();
     const swaggerDoc = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('swagger', app, swaggerDoc);
+    SwaggerModule.setup('swagger', app, swaggerDoc, {
+        customSiteTitle: 'Santoral - API UI',
+        swaggerOptions: {
+            initOAuth: {
+                clientId: process.env.AUTH0_CLIENT_ID,
+                scopes: ['User.Read', 'profile', 'offline_access'],
+                appName: 'Santoral',
+            },
+            oauth2RedirectUrl: 'https://localhost/swagger/oauth2-redirect.html',
+            // oauth2RedirectUrl: `${window.location.protocol}/${window.location.host}/swagger/oauth2-redirect.html`,
+            persistAuthorization: true,
+        }
+    });
 
     await app.init();
     await server.listen(port);

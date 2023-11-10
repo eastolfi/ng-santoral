@@ -10,21 +10,22 @@ import {
     UseGuards,
     Req,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { RequestAuth0 } from '../models/request.auth0';
+import { API_BEARER_NAME, AuthJwtGuard, Tags } from '../shared/constants.api';
 
 @Controller('events')
-@ApiTags('EVENTS')
+@ApiTags(Tags.EVENTS)
+@UseGuards(AuthJwtGuard())
+@ApiBearerAuth(API_BEARER_NAME)
 export class EventsController {
     constructor(private readonly eventsService: EventsService) {}
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
     async create(
         @Body() createEventDto: CreateEventDto,
         @Query('crudQuery') crudQuery: string,
@@ -45,13 +46,11 @@ export class EventsController {
     }
 
     @Get()
-    @UseGuards(AuthGuard('jwt'))
     async findMany(@Query('crudQuery') crudQuery?: string) {
         return await this.eventsService.findMany({ crudQuery });
     }
 
     @Get(':id')
-    @UseGuards(AuthGuard('jwt'))
     async findOne(
         @Param('id') id: string,
         @Query('crudQuery') crudQuery: string,
@@ -61,7 +60,6 @@ export class EventsController {
     }
 
     @Patch(':id')
-    @UseGuards(AuthGuard('jwt'))
     async update(
         @Param('id') id: string,
         @Body() updateEventDto: UpdateEventDto,
@@ -74,7 +72,6 @@ export class EventsController {
     }
 
     @Delete(':id')
-    @UseGuards(AuthGuard('jwt'))
     async remove(
         @Param('id') id: string,
         @Query('crudQuery') crudQuery: string,

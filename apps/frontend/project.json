@@ -58,6 +58,11 @@
         },
         "serve": {
             "executor": "@ngx-env/builder:dev-server",
+            "options": {
+                "ssl": false,
+                "sslCert": "apps/frontend/nginx/certs/nginx.crt",
+                "sslKey": "apps/frontend/nginx/certs/nginx.key"
+            },
             "configurations": {
                 "production": {
                     "browserTarget": "frontend:build:production"

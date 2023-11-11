@@ -4,7 +4,7 @@ import { Observable, catchError, defaultIfEmpty, map, of, tap } from 'rxjs';
 import { Event } from '@prisma/client';
 
 import { ApiResponse } from '@frontend/models/response';
-import { DateService, ToastService } from './date.service';
+import { DateService } from './date.service';
 import { environment } from '../../../environments/environment';
 
 export type Calendar = {
@@ -12,8 +12,6 @@ export type Calendar = {
         [date: string]: Pick<Event, 'id' | 'title'>[]
     }
 };
-
-
 
 @Injectable()
 export class PersistanceService {
@@ -61,14 +59,12 @@ export class PersistanceService {
                     previous[date].push({ id, title });
                     return previous;
                 }, {} as EventsForCalendar)),
-            tap(events => ToastService.messages.push(`Fetched ${(Object.values(events)[0] || []).length} events`)),
             map(events => ({ events })),
             // tap(this.cacheData),
             defaultIfEmpty(this.defaultCalendar),
             catchError(error => {
                 console.error('Error while fetching user data');
                 console.error(error);
-                ToastService.messages.push(error.message);
                 return of(this.defaultCalendar);
             })
         );

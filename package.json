@@ -6,6 +6,7 @@
         "nx": "nx",
         "start:backend": "npx nx serve backend",
         "start:frontend": "npx nx serve frontend",
+        "start:frontend:sw": "npx nx serve frontend --live-reload=false",
         "prisma:client": "npx prisma generate",
         "prisma:studio": "npx prisma studio",
         "docker:backend": "npx nx docker-build backend",

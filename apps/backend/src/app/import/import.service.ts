@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EventType, PrismaClient } from '@prisma/client';
+import { Calendar, EventType, PrismaClient, User } from '@prisma/client';
 
 @Injectable()
 export class ImportService {
@@ -11,7 +11,7 @@ export class ImportService {
         })
     }
 
-    public async importEventsFromReferential(email: string, type: EventType, country: string) {
+    public async importEventsFromReferential(email: string, type: EventType, country: string): Promise<number> {
         const events = await this.prisma.eventReferential.findMany({
             where: {
                 AND: {
@@ -31,7 +31,40 @@ export class ImportService {
             },
         }));
 
-        const currentUser = await this.prisma.user.upsert({
+        const currentUser = await this.ensureUser(email);
+
+        await this.createCalendarEvents(`${type}_${country}`, currentUser.id, eventsForCreation);
+
+        return events.length
+    }
+
+    public async saveEventsFromFileCsv(content: string, email: string): Promise<number> {
+        const NEW_LINE = '\r\n';
+        const SEPARATOR = ',';
+
+        const lines = content.split(NEW_LINE);
+
+        const events = lines.slice(1).map(line => line.split(SEPARATOR));
+
+        const eventsForCreation = events.map(([day, month, title]) => ({
+            event: {
+                create: {
+                    title,
+                    day,
+                    month,
+                },
+            },
+        }));
+
+        const currentUser = await this.ensureUser(email);
+
+        await this.createCalendarEvents('default', currentUser.id, eventsForCreation);
+
+        return events.length;
+    }
+
+    private async ensureUser(email: string): Promise<Partial<User>> {
+        return this.prisma.user.upsert({
             create: {
                 email,
                 name: email.split('@')[0]
@@ -41,31 +74,30 @@ export class ImportService {
                 email
             }
         })
+    }
 
-        const calendarName = `${type}_${country}`;
-        await this.prisma.calendar.upsert({
+    private async createCalendarEvents(calendar: string, userId: number, events: any): Promise<Partial<Calendar>> {
+        return this.prisma.calendar.upsert({
             create: {
-                name: calendarName,
+                name: calendar,
                 owner: {
                     connect: {
-                        id: currentUser.id
+                        id: userId
                     }
                 },
-                events: { create: eventsForCreation }
+                events: { create: events }
             },
             update:  {
                 events: {
-                    create: eventsForCreation
+                    create: events
                 }
             },
             where: {
                 name_ownerId: {
-                    name: calendarName,
-                    ownerId: currentUser.id
+                    name: calendar,
+                    ownerId: userId
                 }
             }
-        })
-
-        return [events.length]
+        });
     }
 }

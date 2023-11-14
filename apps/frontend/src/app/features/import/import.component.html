@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<button [disabled]="!isValidSelection" class="btn accent m-auto" (click)="importEventes()">Import</button>
+<button [disabled]="!isValidSelection" class="btn accent m-auto" (click)="importEvents()">Import</button>
 
 <div *ngIf="eventsImported" class="alert alert-success">
   <!-- <div class="icon__wrapper">
@@ -21,3 +21,5 @@
   <span class="mdi mdi-close close"></span> -->
 </div>
 
+
+<snt-file-upload></snt-file-upload>

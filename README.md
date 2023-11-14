@@ -109,6 +109,8 @@ NG_APP_AUTH0_CLIENT_ID=YOUT_AUTH0_CLIEND_ID  (GH Secrete: AUTH0_CLIENT_ID)
 NG_APP_AUTH0_AUDIENCE=YOUR_AUTH0_AUDIENCE    (GH Secrete: AUTH0_AUDIENCE)
 # Only needed For local access
 NG_APP_API_BASE_URL=https://localhost:443/api
+# Only needed for enabling service worker on local
+NG_APP_ENABLE_LOCAL_SERVICE_WORKER=false
 
 #### Certificates
 

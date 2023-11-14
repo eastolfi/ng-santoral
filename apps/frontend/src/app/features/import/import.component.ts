@@ -26,9 +26,9 @@ export class ImportComponent implements OnInit {
         this.selection = (e.target as HTMLSelectElement).value;
     }
 
-    public importEventes(): void {
+    public importEvents(): void {
         this.importService.importEvents(this.selection).subscribe(({ data }) => {
-            this.eventsImported = data[0];
+            this.eventsImported = data;
             this.calendarService.resetToday();
             // Clear message
             setTimeout(() => this.eventsImported = undefined, 3000);

@@ -41,9 +41,7 @@ export class CalendarService {
         private readonly persistanceService: PersistanceService,
         private readonly http: HttpClient,
         private readonly auth: AuthService,
-    ) {
-        this.changeDate(this.dateService.today);
-    }
+    ) {}
 
     public nextDay(): void {
         this.changeDate(this.dateService.add(1, this.dateService.today));

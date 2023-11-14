@@ -4,4 +4,5 @@ export const environment = {
     auth0client: import.meta.env.NG_APP_AUTH0_CLIENT_ID,
     auth0audience: import.meta.env.NG_APP_AUTH0_AUDIENCE,
     apiUrl: import.meta.env.NG_APP_API_BASE_URL,
+    enableLocalServiceWorker: import.meta.env.NG_APP_ENABLE_LOCAL_SERVICE_WORKER,
   };

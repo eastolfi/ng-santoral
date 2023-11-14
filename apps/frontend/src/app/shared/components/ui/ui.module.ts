@@ -3,22 +3,20 @@ import { CommonModule } from '@angular/common';
 
 // import { DialogComponent } from './dialog/dialog.component';
 import { BottomNavigationModule } from './bottom-navigation/bottom-navigation.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
+
 // import { TreeComponent } from './tree/tree.component';
 
-const components: any[] = [
-    // DialogComponent,
-    // TreeComponent,
-];
-
 @NgModule({
-    declarations: [...components],
+    declarations: [],
     imports: [
         CommonModule,
         BottomNavigationModule,
+        FileUploadModule,
     ],
     exports: [
-        ...components,
         BottomNavigationModule,
+        FileUploadModule,
     ]
 })
 export class UiModule {}

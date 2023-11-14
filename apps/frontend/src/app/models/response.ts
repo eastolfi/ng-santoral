@@ -7,3 +7,7 @@ export type ApiResponse<M> = {
     pageSize: number;
     orderBy: PrismaOrder[];
 }
+
+export type ApiSingleResponse<M> = {
+    data: M;
+}

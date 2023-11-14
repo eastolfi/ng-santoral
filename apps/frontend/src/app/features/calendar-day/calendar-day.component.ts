@@ -32,6 +32,7 @@ export class CalendarDayComponent implements OnInit, OnDestroy {
         private readonly fb: FormBuilder,
         private readonly calendarService: CalendarService,
     ) {
+        this.calendarService.resetToday();
     }
 
     ngOnInit(): void {

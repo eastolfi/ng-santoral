@@ -12,6 +12,10 @@ import { FeaturesModule } from './features/features.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+const enableServiceWorker = (): boolean => {
+    return environment.enableLocalServiceWorker || !isDevMode()
+}
+
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -33,7 +37,7 @@ import { AppComponent } from './app.component';
         FeaturesModule,
         AppRoutingModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: true,//!isDevMode(),
+            enabled: enableServiceWorker(),
             // Register the ServiceWorker as soon as the application is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000',

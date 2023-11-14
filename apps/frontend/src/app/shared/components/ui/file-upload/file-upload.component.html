@@ -1,0 +1,7 @@
+<div class="file-upload">
+    <input #selectFile class="file" type="file" (change)="onFileSelected($event)" />
+
+    <p class="hint">Drag your files here or click in this area.</p>
+
+    <button class="btn accent upload" [disabled]="disabled()" (click)="uploadFile()">Upload</button>
+</div>

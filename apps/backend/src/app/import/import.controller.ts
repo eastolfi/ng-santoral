@@ -3,9 +3,10 @@ import { Controller, Get, Param, Post, Req, UploadedFile, UseGuards, UseIntercep
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { ImportService } from './import.service';
+import { ImportEventDto, ImportService } from './import.service';
 import { MulterFile, RequestAuth0 } from '../models/request.auth0';
 import { API_BEARER_NAME, AuthJwtGuard, Tags } from '../shared/constants.api';
+import { ExcelHelper } from '../shared/excel.helper';
 
 @Controller('import')
 @ApiTags(Tags.IMPORT, Tags.EVENTS)
@@ -31,6 +32,16 @@ export class ImportController {
     @Post('from-file')
     @UseInterceptors(FileInterceptor('file'))
     async fromFile(@UploadedFile() file: MulterFile, @Req() request: RequestAuth0) {
-        return this.importService.saveEventsFromFileCsv(file.buffer.toString(), request.user['santoral/email']);
+        let events: ImportEventDto[];
+
+        if (file.originalname.endsWith('.xlsx')) {
+            events = await ExcelHelper.readXlsx(file);
+        } else if (file.originalname.endsWith('.csv')) {
+            events = await ExcelHelper.readCsv(file);
+        } else {
+            throw new Error('Unsupported file type');
+        }
+
+        return this.importService.saveEventsFromFile(events, request.user['santoral/email']);
     }
 }

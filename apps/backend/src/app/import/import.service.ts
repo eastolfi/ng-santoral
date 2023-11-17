@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Calendar, EventType, PrismaClient, User } from '@prisma/client';
 
+export type ImportEventDto = {
+    title: string;
+    month: string;
+    day: string;
+}
+
 @Injectable()
 export class ImportService {
     private prisma = new PrismaClient();
@@ -38,21 +44,10 @@ export class ImportService {
         return events.length
     }
 
-    public async saveEventsFromFileCsv(content: string, email: string): Promise<number> {
-        const NEW_LINE = '\r\n';
-        const SEPARATOR = ',';
-
-        const lines = content.split(NEW_LINE);
-
-        const events = lines.slice(1).map(line => line.split(SEPARATOR));
-
-        const eventsForCreation = events.map(([day, month, title]) => ({
+    public async saveEventsFromFile(events: ImportEventDto[], email: string): Promise<number> {
+        const eventsForCreation = events.map((event: ImportEventDto) => ({
             event: {
-                create: {
-                    title,
-                    day,
-                    month,
-                },
+                create: event,
             },
         }));
 

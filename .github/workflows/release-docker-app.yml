@@ -1,6 +1,9 @@
 name: APP Publish Docker image
 
 on:
+  push:
+    branches:
+      - fix_auth_prod
   workflow_run:
     workflows:
       - "Release"

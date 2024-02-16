@@ -9,9 +9,13 @@ import { environment } from '@frontend/envs/environment';
 })
 export class HomeComponent {
     public options = [
-        '/api/v1',
-        '/api/v2',
-        '/api',
+        '',
+        'localhost',
+        'https://localhost:2443',
+        'https://calendar-theedu.duckdns.org',
+        // '/api/v1',
+        // '/api/v2',
+        // '/api',
         // //
         // 'api:443/api',          // CORS
         // 'api:2443/api',         // CORS

@@ -49,8 +49,15 @@ COPY dist/apps/frontend /usr/share/nginx/html
 # FROM nginx:alpine
 
 COPY apps/frontend/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
 COPY apps/frontend/nginx/certs/nginx.crt /etc/ssl/certs/nginx.crt
 COPY apps/frontend/nginx/certs/nginx.key /etc/ssl/private/nginx.key
+
+
+COPY apps/frontend/nginx/certs/server.crt /etc/ssl/certs/server.crt
+COPY apps/frontend/nginx/certs/server.csr /etc/ssl/certs/server.csr
+COPY apps/frontend/nginx/certs/server.key /etc/ssl/private/server.key
+
 # COPY --from=build /usr/src/app/dist/ng-santoral /usr/share/nginx/html
 
 EXPOSE 80

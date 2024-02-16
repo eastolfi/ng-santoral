@@ -59,6 +59,12 @@ jobs:
           echo "${{secrets.APP_NGINX_CERT}}" >> apps/frontend/nginx/certs/nginx.crt
           touch apps/frontend/nginx/certs/nginx.key
           echo "${{secrets.APP_NGINX_CERT_KEY}}" >> apps/frontend/nginx/certs/nginx.key
+          touch apps/frontend/nginx/certs/server.crt
+          echo "${{secrets.APP_SERVER_CERT}}" >> apps/frontend/nginx/certs/server.crt
+          touch apps/frontend/nginx/certs/server.key
+          echo "${{secrets.APP_SERVER_CERT_KEY}}" >> apps/frontend/nginx/certs/server.key
+          touch apps/frontend/nginx/certs/server.csr
+          echo "${{secrets.APP_SERVER_CERT_REQ}}" >> apps/frontend/nginx/certs/server.csr
 
       - run: npx nx build frontend
 

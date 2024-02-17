@@ -20,7 +20,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
                 jwksUri: `${process.env.AUTH0_ISSUER_URL}.well-known/jwks.json`,
             }),
             // secretOrKey: jwtConstants.secret,
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: (req) => {
+                console.log('Headers:')
+                console.log(req.headers)
+                console.log('Extracting:')
+                console.log(req)
+                return ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+            },
             audience: process.env.AUTH0_AUDIENCE,
             issuer: `${process.env.AUTH0_ISSUER_URL}`,
             algorithms: ['RS256'],
@@ -28,7 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     canActivate(context: ExecutionContext) {
-        console.log(1)
+        console.log('Checking')
         // Add your custom authentication logic here
         // for example, call super.logIn(request) to establish a session.
         // return super.canActivate(context);
@@ -36,6 +42,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       }
 
     validate(payload: unknown): unknown {
+        console.log('Validating: ')
+        console.log(payload)
         return payload;
     }
 }

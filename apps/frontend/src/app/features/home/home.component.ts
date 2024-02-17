@@ -9,8 +9,9 @@ import { environment } from '@frontend/envs/environment';
 })
 export class HomeComponent {
     public options = [
+        environment.apiUrl,
         '/api',
-        'localhost/api',
+        'https://192.168.1.119:2443/api',
         'https://localhost:2443/api',
         'https://calendar-theedu.duckdns.org/api',
         // '/api/v1',

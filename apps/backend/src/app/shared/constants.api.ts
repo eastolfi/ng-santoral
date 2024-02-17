@@ -22,16 +22,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     ) {
         console.log('----- Checking request -----')
         // console.log(args);
-        console.log('error')
-        console.log(err);
-        console.log('user')
-        console.log(user);
-        console.log('info')
-        console.log(info);
-        console.log('context')
-        console.log(context);
-        console.log('status')
-        console.log(status);
+        console.log('error: ' + err)
+        console.log('user: ' + user)
+        console.log('info: ' + info)
+        console.log('status: ' + status)
         console.log('----- End Checking request -----')
         // return super.handleRequest(...args);
         return super.handleRequest(err, user, info, context, status);

@@ -27,11 +27,23 @@ const enableServiceWorker = (): boolean => {
             authorizationParams: {
                 redirect_uri: window.location.origin,
                 audience: environment.auth0audience,
+                // audience: `https://${environment.auth0domain}/api/v2/`,
                 scope: 'read:current_user',
             },
-            httpInterceptor: {
-                allowedList: [`${environment.apiUrl}/*`]
-            },
+            // httpInterceptor: {
+            //     allowedList: [`${environment.apiUrl}/*`]
+            //     allowedList: [
+            //         {
+            //             uri: `https://${environment.auth0domain}/api/v2/*`,
+            //             tokenOptions: {
+            //                 authorizationParams: {
+            //                     audience: `https://${environment.auth0domain}/api/v2/`,
+            //                     scope: 'read:current_user'
+            //                 }
+            //             }
+            //         }
+            //     ]
+            // },
         }),
         SharedModule,
         FeaturesModule,

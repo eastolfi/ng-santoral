@@ -11,6 +11,7 @@ import { environment } from '@frontend/envs/environment';
 import { FeaturesModule } from './features/features.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
 
 const enableServiceWorker = (): boolean => {
     return environment.enableLocalServiceWorker || !isDevMode()
@@ -60,6 +61,10 @@ const enableServiceWorker = (): boolean => {
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthHttpInterceptor,
+            multi: true,
+        }, {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JwtInterceptor,
             multi: true,
         }
     ],

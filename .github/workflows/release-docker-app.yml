@@ -49,6 +49,7 @@ jobs:
           echo NG_APP_AUTH0_DOMAIN=${{secrets.AUTH0_DOMAIN}} >> apps/frontend/.env.local
           echo NG_APP_AUTH0_CLIENT_ID=${{secrets.AUTH0_CLIENT_ID}} >> apps/frontend/.env.local
           echo NG_APP_AUTH0_AUDIENCE=${{secrets.AUTH0_AUDIENCE}} >> apps/frontend/.env.local
+          echo NG_APP_API_BASE_URL=${{secrets.API_BASE_URL}} >> apps/frontend/.env.local
 
       - name: Create certificates for NgInx
         run: |

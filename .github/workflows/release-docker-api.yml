@@ -50,9 +50,13 @@ jobs:
       - name: Create env file
         run: |
           touch apps/backend/.env.local
+          echo AUTH0_DOMAIN=${{secrets.AUTH0_DOMAIN}} >> apps/backend/.env.local
           echo AUTH0_ISSUER_URL=${{secrets.AUTH0_ISSUER}} >> apps/backend/.env.local
           echo AUTH0_AUDIENCE=${{secrets.AUTH0_AUDIENCE}} >> apps/backend/.env.local
           echo AUTH0_CLIENT_ID=${{secrets.AUTH0_CLIENT_ID}} >> apps/backend/.env.local
+          echo AUTH0_CLIENT_SECRET=${{secrets.AUTH0_CLIENT_SECRET}} >> apps/backend/.env.local
+          echo AUTH0_CALLBACK_URL=${{secrets.AUTH0_CALLBACK_URL}} >> apps/backend/.env.local
+          echo JWT_SECRET=${{secrets.JWT_SECRET}} >> apps/backend/.env.local
 
       - name: Create certificates for NgInx
         run: |

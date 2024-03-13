@@ -5,8 +5,11 @@ export enum Tags {
     EVENTS = 'EVENTS',
     IMPORT = 'IMPORT',
     REFERENTIAL = 'REFERENTIAL',
+    USERS = 'USERS',
+    AUTH = 'AUTH',
 }
 
 export const API_BEARER_NAME = 'api-access-token';
 
-export const AuthJwtGuard: () => Type<IAuthGuard> = () => AuthGuard('jwt');
+export const JwtAuthGuard: () => Type<IAuthGuard> = () => AuthGuard('jwt');
+export const Auth0Guard: () => Type<IAuthGuard> = () => AuthGuard('auth0');

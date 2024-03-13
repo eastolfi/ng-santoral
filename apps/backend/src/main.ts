@@ -44,7 +44,14 @@ async function bootstrap() {
     const swaggerConfig = new DocumentBuilder()
         .setTitle('Santoral - API')
         .setDescription('Santoral - API')
-        .setVersion('1.0')
+        .setVersion('1.1')
+        .addBearerAuth({
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+            name: "Authorization",
+            in: 'header',
+        })
         .addOAuth2(
             {
                 type: 'oauth2',

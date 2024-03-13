@@ -88,9 +88,13 @@ Change the URL as needed
 For local access, modify /apps/backend/.env.local file
 For Github Actions, add them as secrets
 
-AUTH0_ISSUER_URL=YOUR_AUTH0_ISSUER_URL       (GH Secrete: AUTH0_ISSUER)
-AUTH0_AUDIENCE=YOUR_AUTH0_AUDIENCE           (GH Secrete: AUTH0_AUDIENCE)
-AUTH0_CLIENT_ID=YOUT_AUTH0_CLIEND_ID         (GH Secrete: AUTH0_CLIENT_ID)
+AUTH0_DOMAIN=YOUR_AUTH0_ISSUER_URL           (GH Secret: AUTH0_DOMAIN)
+AUTH0_ISSUER_URL=YOUR_AUTH0_ISSUER_URL       (GH Secret: AUTH0_ISSUER)
+AUTH0_AUDIENCE=YOUR_AUTH0_AUDIENCE           (GH Secret: AUTH0_AUDIENCE)
+AUTH0_CLIENT_ID=YOUR_AUTH0_CLIENT_ID         (GH Secret: AUTH0_CLIENT_ID)
+AUTH0_CLIENT_SECRET=YOUR_AUTH0_CLIENT_ID     (GH Secret: AUTH0_CLIENT_SECRET)
+AUTH0_CALLBACK_URL=YOUR_AUTH0_CALLBACK_URL   (GH Secret: AUTH0_CALLBACK_URL)
+JWT_SECRET=JWT_SIGNING_SECRET                (GH Secret: JWT_SECRET)
 
 #### Certificates
 
@@ -126,10 +130,11 @@ the API application in the browser (https://localhost/api) in order to trust the
 Then you can access http://localhost:4200 normally.
 
 ## DB
+Restore the DB `npx prisma migrate reset`
 
-npx prisma migrate reset
-npx prisma format
-ts-node prisma/data-migrations/XXX.ts
+Format schema.prisma `npx prisma format`
+
+Run data migrations `ts-node prisma/data-migrations/XXX.ts`
 
 ## Development server
 

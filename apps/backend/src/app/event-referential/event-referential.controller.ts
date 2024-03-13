@@ -14,11 +14,11 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateEventReferentialDto } from './dto/create-event-referential.dto';
 import { UpdateEventReferentialDto } from './dto/update-event-referential.dto';
 import { EventReferentialService } from './event-referential.service';
-import { API_BEARER_NAME, AuthJwtGuard, Tags } from '../shared/constants.api';
+import { API_BEARER_NAME, JwtAuthGuard, Tags } from '../shared/constants.api';
 
 @Controller('event-referential')
 @ApiTags(Tags.REFERENTIAL)
-@UseGuards(AuthJwtGuard())
+@UseGuards(JwtAuthGuard())
 @ApiBearerAuth(API_BEARER_NAME)
 export class EventReferentialController {
     constructor(

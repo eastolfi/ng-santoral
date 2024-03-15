@@ -13,7 +13,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 const enableServiceWorker = (): boolean => {
-    return environment.enableLocalServiceWorker || !isDevMode()
+    const isEnabledFromProp = (environment.enableLocalServiceWorker as boolean | undefined) === true;
+    const enabled = isEnabledFromProp || !isDevMode();
+    if (enabled) console.log('Enabling service worker...', enabled);
+    return enabled;
 }
 
 @NgModule({

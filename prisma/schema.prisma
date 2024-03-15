@@ -24,7 +24,7 @@ model Calendar {
   ownerId Int
   events  EventsForCalendar[]
 
-  @@unique([ name, ownerId ])
+  @@unique([name, ownerId])
 }
 
 model EventsForCalendar {
@@ -36,10 +36,14 @@ model EventsForCalendar {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  email     String     @unique
-  name      String?
-  calendars Calendar[]
+  id             Int        @id @default(autoincrement())
+  email          String     @unique
+  name           String?
+  password       String     @default("")
+  provider       String     @default("auth0")
+  provider_extra String     @default("auth0")
+  provider_id    String?
+  calendars      Calendar[]
 }
 
 model EventReferential {

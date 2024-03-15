@@ -5,12 +5,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 import { ImportEventDto, ImportService } from './import.service';
 import { MulterFile, RequestAuth0 } from '../models/request.auth0';
-import { API_BEARER_NAME, AuthJwtGuard, Tags } from '../shared/constants.api';
+import { API_BEARER_NAME, JwtAuthGuard, Tags } from '../shared/constants.api';
 import { ExcelHelper } from '../shared/excel.helper';
 
 @Controller('import')
 @ApiTags(Tags.IMPORT, Tags.EVENTS)
-@UseGuards(AuthJwtGuard())
+@UseGuards(JwtAuthGuard())
 @ApiBearerAuth(API_BEARER_NAME)
 export class ImportController {
     constructor(

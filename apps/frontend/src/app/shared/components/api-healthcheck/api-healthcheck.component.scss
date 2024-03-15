@@ -10,6 +10,10 @@
 
     &.ok {
         background-color: #79dd9d;
+
+        &.secured {
+            border: solid 1px #0066feff;
+        }
     }
     &.ko {
         background-color: #f15656;

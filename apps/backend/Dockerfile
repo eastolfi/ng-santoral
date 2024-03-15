@@ -6,7 +6,8 @@ ENV PORT=443
 
 WORKDIR /app
 
-COPY dist/apps/backend backend
+COPY dist/apps/backend ./backend
+COPY apps/backend/.env ./backend
 COPY .env ./
 
 COPY package*.json ./

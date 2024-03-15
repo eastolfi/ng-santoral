@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `password` VARCHAR(191) NOT NULL DEFAULT '',
+    ADD COLUMN `provider` VARCHAR(191) NOT NULL DEFAULT 'auth0',
+    ADD COLUMN `provider_extra` VARCHAR(191) NOT NULL DEFAULT 'auth0',
+    ADD COLUMN `provider_id` VARCHAR(191) NULL;

@@ -16,11 +16,11 @@ import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { RequestAuth0 } from '../models/request.auth0';
-import { API_BEARER_NAME, AuthJwtGuard, Tags } from '../shared/constants.api';
+import { API_BEARER_NAME, JwtAuthGuard, Tags } from '../shared/constants.api';
 
 @Controller('events')
 @ApiTags(Tags.EVENTS)
-@UseGuards(AuthJwtGuard())
+@UseGuards(JwtAuthGuard())
 @ApiBearerAuth(API_BEARER_NAME)
 export class EventsController {
     constructor(private readonly eventsService: EventsService) {}

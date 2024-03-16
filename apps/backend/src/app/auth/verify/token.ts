@@ -57,6 +57,5 @@ export const getToken = (req): string => {
 
 export const decodeToken = (req): { payload: UserAuth0, header: any } => {
     const token = getToken(req);
-    console.log(token)
     return JWT.decode(token, { complete: true }) as { payload: UserAuth0, header: any };
 }
